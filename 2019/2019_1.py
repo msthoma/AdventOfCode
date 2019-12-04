@@ -1,3 +1,6 @@
+from utils import utils
+
+
 def recursive_fuel(mass):
     fuel = (mass // 3) - 2
     if fuel <= 0:
@@ -15,11 +18,12 @@ def day_1_2(data):
 
 
 def main():
-    with open("day1_input.txt", "r") as f:
+    with open(f"{utils.get_day_name()}.txt", "r") as f:
         input_data = f.read().splitlines()
 
     day_1_1(input_data)
     day_1_2(input_data)
+    # print(f"{day_name}_1 answer:", common.loc[1:, "manhattan"].min())
 
 
 if __name__ == '__main__':
