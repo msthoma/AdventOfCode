@@ -1,9 +1,7 @@
-import os
-import sys
 import pandas as pd
 from matplotlib import pyplot as plt
 
-day_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+from utils import utils
 
 
 def gen_point_path(directions):
@@ -27,7 +25,8 @@ def gen_point_path(directions):
 
 
 def main():
-    with open(f"{day_name}.txt", "r") as f:
+    day = utils.get_day_name()
+    with open(f"{day}.txt", "r") as f:
         input_data = f.read()
     first, second = input_data.splitlines()
 
@@ -46,13 +45,14 @@ def main():
     common = pd.merge(df_first, df_second, how="inner", left_on="x1y1", right_on="x2y2")
     common["manhattan"] = abs(common["x1"]) + abs(common["y1"])
 
-    print(f"{day_name}_1 answer:", common.loc[1:, "manhattan"].min())
+    utils.print_res(day, 1, common.loc[1:, "manhattan"].min())
 
     sums = [df_first[df_first["x1y1"] == inter].index.values.astype(int)[0] +
             df_second[df_second["x2y2"] == inter].index.values.astype(int)[0] for inter in common.loc[1:, "x1y1"]]
 
-    print(f"{day_name}_2 answer:", min(sums))
+    utils.print_res(day, 2, min(sums))
 
+    # optionally plot paths
     # plt.scatter(df_first.loc[:, "x1"], df_first.loc[:, "y1"], s=1, c="red")
     # plt.scatter(df_second.loc[:, "x2"], df_second.loc[:, "y2"], s=1)
     # plt.show()
