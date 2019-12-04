@@ -1,11 +1,10 @@
-import os
 import re
-import sys
 
-day_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+from utils import utils
 
 
 def main():
+    day = utils.get_day_name()
     puzzle_input = range(372304, 847060 + 1)
     candidates = 0
     candidates_2 = 0
@@ -23,8 +22,8 @@ def main():
                     if re.search(pattern, pwd_sub):
                         candidates_2 += 1
 
-    print(f"{day_name}_1 answer:", candidates)
-    print(f"{day_name}_2 answer:", candidates_2)
+    utils.print_res(day, 1, candidates)
+    utils.print_res(day, 2, candidates_2)
 
 
 if __name__ == '__main__':
