@@ -9,21 +9,13 @@ def recursive_fuel(mass):
         return fuel + recursive_fuel(fuel)
 
 
-def day_1_1(data):
-    print(sum((int(i) // 3) - 2 for i in data))
-
-
-def day_1_2(data):
-    print(sum(recursive_fuel(int(i)) for i in data))
-
-
 def main():
-    with open(f"{utils.get_day_name()}.txt", "r") as f:
+    day_name = utils.get_day_name()
+    with open(f"{day_name}.txt", "r") as f:
         input_data = f.read().splitlines()
 
-    day_1_1(input_data)
-    day_1_2(input_data)
-    # print(f"{day_name}_1 answer:", common.loc[1:, "manhattan"].min())
+    utils.print_res(day_name, 1, sum((int(i) // 3) - 2 for i in input_data))
+    utils.print_res(day_name, 1, sum(recursive_fuel(int(i)) for i in input_data))
 
 
 if __name__ == '__main__':
