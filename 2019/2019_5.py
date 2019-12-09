@@ -10,10 +10,10 @@ def computer(intcode, ip=0):
     else:
         opcode_str = str(opcode)
         opcode = int(opcode_str[-1])
-        assert opcode in [1, 2, 3, 4]
+        assert opcode in range(1, 9)
 
+        # get modes
         modes = [0] * 3
-
         if len(opcode_str) != 1:
             for i, mode in enumerate(opcode_str[:-2][::-1]):
                 mode = int(mode)
@@ -27,6 +27,14 @@ def computer(intcode, ip=0):
             output = intcode[intcode[ip + 1]] if modes[0] == 0 else intcode[ip + 1]
             print("output:", output)
             ip += 2
+        elif opcode_str == 5:
+            pass
+        elif opcode_str == 6:
+            pass
+        elif opcode_str == 7:
+            pass
+        elif opcode_str == 8:
+            pass
         else:
             p1 = intcode[intcode[ip + 1]] if modes[0] == 0 else intcode[ip + 1]
             p2 = intcode[intcode[ip + 2]] if modes[1] == 0 else intcode[ip + 2]
