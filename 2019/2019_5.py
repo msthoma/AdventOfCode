@@ -1,7 +1,7 @@
 from utils import utils
 
 
-def computer2(intcode, ip=0):
+def computer(intcode, ip=0):
     opcode = intcode[ip]
 
     if opcode == 99:
@@ -37,7 +37,7 @@ def computer2(intcode, ip=0):
                 intcode[intcode[ip + 3]] = p1 * p2
             ip += 4
 
-    return computer2(intcode, ip)
+    return computer(intcode, ip)
 
 
 def main():
@@ -47,7 +47,7 @@ def main():
 
     input_data = [int(i) for i in input_data]
 
-    computer2(input_data)
+    computer(input_data)
 
 
 if __name__ == '__main__':
