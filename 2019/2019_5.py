@@ -8,6 +8,7 @@ def computer(intcode, ip=0):
         # terminate
         return intcode
     else:
+        # extract opcode
         opcode_str = str(opcode)
         opcode = int(opcode_str[-1])
         assert opcode in range(1, 9)
@@ -23,27 +24,49 @@ def computer(intcode, ip=0):
         if opcode == 3:
             intcode[intcode[ip + 1]] = int(input("Enter integer input: "))
             ip += 2
-        elif opcode == 4:
-            output = intcode[intcode[ip + 1]] if modes[0] == 0 else intcode[ip + 1]
-            print("output:", output)
-            ip += 2
-        elif opcode_str == 5:
-            pass
-        elif opcode_str == 6:
-            pass
-        elif opcode_str == 7:
-            pass
-        elif opcode_str == 8:
-            pass
         else:
+            # get parameters
             p1 = intcode[intcode[ip + 1]] if modes[0] == 0 else intcode[ip + 1]
-            p2 = intcode[intcode[ip + 2]] if modes[1] == 0 else intcode[ip + 2]
 
-            if opcode == 1:
-                intcode[intcode[ip + 3]] = p1 + p2
-            elif opcode == 2:
-                intcode[intcode[ip + 3]] = p1 * p2
-            ip += 4
+            if opcode == 4:
+                print("output:", p1)
+                ip += 2
+
+            else:
+                p2 = intcode[intcode[ip + 2]] if modes[1] == 0 else intcode[ip + 2]
+
+                if opcode == 5:
+                    if p1 != 0:
+                        ip = p2
+                    else:
+                        ip += 3
+
+                elif opcode == 6:
+                    if p1 == 0:
+                        ip = p2
+                    else:
+                        ip += 3
+
+                elif opcode == 7:
+                    if p1 < p2:
+                        intcode[intcode[ip + 3]] = 1
+                    else:
+                        intcode[intcode[ip + 3]] = 0
+                    ip += 4
+
+                elif opcode == 8:
+                    if p1 == p2:
+                        intcode[intcode[ip + 3]] = 1
+                    else:
+                        intcode[intcode[ip + 3]] = 0
+                    ip += 4
+
+                else:
+                    if opcode == 1:
+                        intcode[intcode[ip + 3]] = p1 + p2
+                    elif opcode == 2:
+                        intcode[intcode[ip + 3]] = p1 * p2
+                    ip += 4
 
     return computer(intcode, ip)
 
