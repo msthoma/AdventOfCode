@@ -1,5 +1,30 @@
-def computer(intcode, ip=0):
+def computer(intcode):
+    ip = 0
     opcode = intcode[ip]
+
+    def get_params(nparams):
+        # extract opcode
+        opcode_str = str(intcode[ip])
+        opcode = int(opcode_str[-2])
+        assert opcode in range(1, 9)
+
+        # get modes
+        modes = [0] * nparams
+        if len(opcode_str) != 1:
+            for i, mode in enumerate(opcode_str[:-2][::-1]):
+                mode = int(mode)
+                assert mode in [0, 1]
+                modes[i] = mode
+
+        # get params
+        params = []
+        for i in range(1, nparams + 1):
+            param = intcode[ip + i]  # immediate case
+            if modes[i]:
+                param = intcode[param]  # position case
+            params.append(param)
+
+        return params
 
     if opcode == 99:
         # terminate
