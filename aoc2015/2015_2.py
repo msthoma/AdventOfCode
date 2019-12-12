@@ -1,13 +1,12 @@
-import os
-import sys
 from functools import reduce
 from operator import mul
 
-day_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+from utils.utils import day_name, input_fp, print_res
 
 
 def main():
-    with open(f"{day_name}.txt", "r") as f:
+    day = day_name()
+    with open(input_fp(day), "r") as f:
         input_data = f.read()
 
     dims = [sorted([int(d) for d in dim.split(sep="x")]) for dim in input_data.splitlines()]
@@ -23,8 +22,8 @@ def main():
     for dim in dims:
         ribbon_needed += 2 * (dim[0] + dim[1]) + reduce(mul, dim, 1)
 
-    print(f"{day_name}_1 answer:", area_needed)
-    print(f"{day_name}_2 answer:", ribbon_needed)
+    print_res(day, 1, area_needed)
+    print_res(day, 1, ribbon_needed)
 
 
 if __name__ == '__main__':

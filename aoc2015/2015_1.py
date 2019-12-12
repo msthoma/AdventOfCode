@@ -1,13 +1,11 @@
-import os
-import sys
-
-day_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+from utils.utils import day_name, input_fp, print_res
 
 
 def main():
-    with open(f"{day_name}.txt", "r") as f:
+    day = day_name()
+    with open(input_fp(day), "r") as f:
         input_data = f.read()
-    print(f"{day_name}_1 answer:", input_data.count("(") - input_data.count(")"))
+    print_res(day, 1, input_data.count("(") - input_data.count(")"))
 
     pos = 0
     for i, instr in enumerate(input_data):
@@ -17,7 +15,7 @@ def main():
             pos -= 1
 
         if pos < 0:
-            print(f"{day_name}_2 answer:", i + 1)
+            print_res(day, 2, i + 1)
             break
 
 
