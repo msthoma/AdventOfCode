@@ -1,10 +1,10 @@
 import re
 
-from utils import utils
+from utils.utils import day_name, input_fp, print_res
 
 
 def main():
-    day = utils.day_name()
+    day = day_name()
     puzzle_input = range(372304, 847060 + 1)
     candidates = 0
     candidates_2 = 0
@@ -22,8 +22,8 @@ def main():
                     if re.search(pattern, pwd_sub):
                         candidates_2 += 1
 
-    utils.print_res(day, 1, candidates)
-    utils.print_res(day, 2, candidates_2)
+    print_res(day, 1, candidates)
+    print_res(day, 2, candidates_2)
 
 
 if __name__ == '__main__':

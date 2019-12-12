@@ -1,4 +1,4 @@
-from utils import utils
+from utils.utils import day_name, input_fp, print_res
 
 
 def computer(intcode, ip=0):
@@ -72,8 +72,8 @@ def computer(intcode, ip=0):
 
 
 def main():
-    day = utils.day_name()
-    with open(f"{day}.txt", "r") as f:
+    day = day_name()
+    with open(input_fp(day), "r") as f:
         input_data = f.read().split(sep=",")
 
     input_data = [int(i) for i in input_data]

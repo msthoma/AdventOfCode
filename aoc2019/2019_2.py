@@ -1,4 +1,4 @@
-from utils import utils
+from utils.utils import day_name, input_fp, print_res
 
 
 def computer(intcode, pos=0):
@@ -30,18 +30,18 @@ def combinations(start, stop):
 
 
 def main():
-    day = utils.day_name()
-    with open(f"{day}.txt", "r") as f:
+    day = day_name()
+    with open(input_fp(day), "r") as f:
         input_data = f.read().split(sep=",")
 
     input_data = [int(i) for i in input_data]
 
-    utils.print_res(day, 1, run_program(input_data.copy(), 12, 2))
+    print_res(day, 1, run_program(input_data.copy(), 12, 2))
 
     for cmb in combinations(0, 99):
         res = run_program(input_data.copy(), cmb[0], cmb[1])
         if res == 19690720:
-            utils.print_res(day, 2, 100 * cmb[0] + cmb[1])
+            print_res(day, 2, 100 * cmb[0] + cmb[1])
             break
 
 
