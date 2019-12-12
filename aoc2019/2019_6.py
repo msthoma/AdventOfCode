@@ -1,9 +1,9 @@
-from utils import utils
+from utils.utils import get_day_name, get_input_fp, print_res
 
 
 def main():
-    day = utils.get_day_name()
-    with open(f"{day}.txt", "r") as f:
+    day = get_day_name()
+    with open(get_input_fp(day), "r") as f:
         input_data = [line.split(")") for line in f.read().splitlines()]
 
     # get all objects
@@ -23,7 +23,7 @@ def main():
                 path_lengths[obj] = 0
         return path_lengths[obj]
 
-    utils.print_res(day, 1, sum(get_path(obj) for obj in all_objects))
+    print_res(day, 1, sum(get_path(obj) for obj in all_objects))
 
     # path from SAN to COM
     san_to_com = ["SAN"]
@@ -41,7 +41,7 @@ def main():
             distance = me_to_com.index(obj) + san_to_com.index(obj)
             distance = distance - 2  # exclude YOU and SAN
             break
-    utils.print_res(day, 2, distance)
+    print_res(day, 2, distance)
 
 
 if __name__ == '__main__':
