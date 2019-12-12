@@ -1,10 +1,11 @@
+import networkx as nx
 from utils.utils import day_name, input_fp, print_res
 
 
 def main():
     day = day_name()
     with open(input_fp(day), "r") as f:
-        input_data = [line.split(")") for line in f.read().splitlines()]
+        input_data = [line.strip().split(")") for line in f.read().splitlines()]
 
     # get all objects
     all_objects = set(val for pair in input_data for val in pair)
@@ -42,6 +43,13 @@ def main():
             distance = distance - 2  # exclude YOU and SAN
             break
     print_res(day, 2, distance)
+
+    # alternative solution with networkx
+    g = nx.DiGraph()
+    for pair in input_data:
+        g.add_edge(*pair)
+    print_res(day, 1, nx.transitive_closure(g).size())
+    print_res(day, 2, nx.shortest_path_length(g.to_undirected(), "YOU", "SAN") - 2)
 
 
 if __name__ == '__main__':
