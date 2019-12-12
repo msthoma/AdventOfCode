@@ -30,7 +30,7 @@ def combinations(start, stop):
 
 
 def main():
-    day = utils.get_day_name()
+    day = utils.day_name()
     with open(f"{day}.txt", "r") as f:
         input_data = f.read().split(sep=",")
 

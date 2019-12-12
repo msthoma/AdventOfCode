@@ -10,7 +10,7 @@ def recursive_fuel(mass):
 
 
 def main():
-    day_name = utils.get_day_name()
+    day_name = utils.day_name()
     with open(f"{day_name}.txt", "r") as f:
         input_data = f.read().splitlines()
 

@@ -4,7 +4,7 @@ from utils import utils
 
 
 def main():
-    day = utils.get_day_name()
+    day = utils.day_name()
     with open(f"{day}.txt", "r") as f:
         input_data = f.read()
     print(len(input_data))

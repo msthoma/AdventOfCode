@@ -4,7 +4,7 @@ from utils import utils
 
 
 def main():
-    day = utils.get_day_name()
+    day = utils.day_name()
     puzzle_input = range(372304, 847060 + 1)
     candidates = 0
     candidates_2 = 0

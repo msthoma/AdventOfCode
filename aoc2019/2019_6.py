@@ -1,9 +1,9 @@
-from utils.utils import get_day_name, get_input_fp, print_res
+from utils.utils import day_name, input_fp, print_res
 
 
 def main():
-    day = get_day_name()
-    with open(get_input_fp(day), "r") as f:
+    day = day_name()
+    with open(input_fp(day), "r") as f:
         input_data = [line.split(")") for line in f.read().splitlines()]
 
     # get all objects
