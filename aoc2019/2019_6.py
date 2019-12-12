@@ -1,7 +1,3 @@
-import matplotlib.pyplot as plt
-import networkx as nx
-from collections import defaultdict
-
 from utils import utils
 
 
@@ -28,11 +24,6 @@ def main():
         return path_lengths[obj]
 
     utils.print_res(day, 1, sum(get_path(obj) for obj in all_objects))
-    # g = nx.Graph(input_data)
-    # print(g)
-    # plt.subplot(111)
-    # nx.draw(g, node_size=10, with_labels=True)
-    # plt.show()
 
     # path from SAN to COM
     san_to_com = ["SAN"]
