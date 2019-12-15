@@ -6,7 +6,9 @@ def computer(intcode):
 
     def get_params(nparams):
         op_str = str(intcode[ip])
+        op = int(op_str[-2:])
 
+        # get modes
         modes = [0] * 3
         if len(op_str) != 1:
             for i, mode in enumerate(op_str[:-2][::-1]):
@@ -16,17 +18,17 @@ def computer(intcode):
 
         # get params
         params = []
-        for i in range(0, nparams):
+        for i in range(1, nparams + 1):
             param = intcode[ip + i]  # immediate case
-            if modes[i] == 0 and i < nparams - 1:
-                param = intcode[param]  # position case
+            mode = modes[i - 1]
+            if i < nparams or op not in [1, 2, 3, 7, 8]:
+                if mode == 0:
+                    param = intcode[param]  # position case
             params.append(param)
-
         return params
 
     while True:
-        opcode = intcode[ip] % 100
-        print(opcode)
+        opcode = int(str(intcode[ip])[-2:])
         assert opcode in valid_opcodes
 
         if opcode == 99:  # terminate
@@ -41,7 +43,7 @@ def computer(intcode):
             ip += 4
         elif opcode == 3:  # input
             p1, = get_params(1)
-            intcode[p1] = 1  # int(input("Enter integer input: "))
+            intcode[p1] = int(input("Enter integer input: "))
             ip += 2
         elif opcode == 4:  # print
             p1, = get_params(1)
@@ -49,13 +51,13 @@ def computer(intcode):
             ip += 2
         elif opcode == 5:  # jump-if-true
             p1, p2 = get_params(2)
-            if p1 != 0:
+            if p1:
                 ip = p2
             else:
                 ip += 3
         elif opcode == 6:  # jump-if-false
             p1, p2 = get_params(2)
-            if p1 == 0:
+            if not p1:
                 ip = p2
             else:
                 ip += 3
