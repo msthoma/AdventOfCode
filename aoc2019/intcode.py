@@ -1,4 +1,4 @@
-def computer(intcode, inp=None):
+def computer(intcode, input_list):
     valid_opcodes = list(range(1, 9))
     valid_opcodes.append(99)
 
@@ -43,7 +43,7 @@ def computer(intcode, inp=None):
             ip += 4
         elif opcode == 3:  # input
             p1, = get_params(1)
-            intcode[p1] = inp if inp is not None else int(input("Enter integer input: "))
+            intcode[p1] = next(input_list)
             ip += 2
         elif opcode == 4:  # print
             p1, = get_params(1)
