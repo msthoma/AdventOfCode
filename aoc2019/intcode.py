@@ -1,4 +1,6 @@
 def computer(intcode, input_list):
+    input_list = iter(input_list)
+
     valid_opcodes = list(range(1, 9))
     valid_opcodes.append(99)
 
