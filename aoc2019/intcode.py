@@ -1,4 +1,4 @@
-def computer(intcode, input_list, ip=0):
+def computer(intcode, input_list, ip=0, feedback=False):
     input_list = iter(input_list)
 
     valid_opcodes = list(range(1, 9))
@@ -27,11 +27,14 @@ def computer(intcode, input_list, ip=0):
             params.append(param)
         return params
 
+    res = {"output": [], "ip": ip, "halt": False}
+
     while True:
         opcode = int(str(intcode[ip])[-2:])
         assert opcode in valid_opcodes
 
         if opcode == 99:  # terminate
+            res["halt"] = True
             break
         elif opcode == 1:  # add
             p1, p2, p3 = get_params(3)
@@ -47,8 +50,11 @@ def computer(intcode, input_list, ip=0):
             ip += 2
         elif opcode == 4:  # print
             p1, = get_params(1)
-            yield p1
             ip += 2
+            res["output"].append(p1)
+            res["ip"] = ip
+            if feedback:
+                break
         elif opcode == 5:  # jump-if-true
             p1, p2 = get_params(2)
             if p1:
@@ -77,3 +83,5 @@ def computer(intcode, input_list, ip=0):
             ip += 4
         else:
             raise ValueError
+
+    return res
