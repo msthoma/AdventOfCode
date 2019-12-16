@@ -1,10 +1,8 @@
-def computer(intcode, input_list):
+def computer(intcode, input_list, ip=0):
     input_list = iter(input_list)
 
     valid_opcodes = list(range(1, 9))
     valid_opcodes.append(99)
-
-    ip = 0
 
     def get_params(nparams):
         op_str = str(intcode[ip])
