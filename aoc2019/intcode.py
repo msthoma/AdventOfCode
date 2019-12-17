@@ -30,9 +30,9 @@ def computer(intcode, input_list, ip=0, feedback=False, extend=False):
                 if mode == 0:
                     param = intcode[param]  # position case
                 elif mode == 2:
-                    param = intcode[param + base]
+                    param = intcode[param + base]  # relative case
             elif mode == 2:
-                param += base
+                param += base  # relative case
             params.append(param)
         return params
 
