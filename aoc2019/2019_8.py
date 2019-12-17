@@ -1,4 +1,4 @@
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 import numpy as np
 
 from utils.utils import day_name, input_fp, print_res
@@ -38,9 +38,11 @@ def main():
     print_res(day, 2, res)
 
     # plot image
+    plt.figure(figsize=(4, 1.5))
     plt.imshow(res, cmap="binary")
+    plt.title("Part 2 decoded image")
     plt.savefig("2019_8_2_img.svg")
-    plt.show()
+    # plt.show()
 
 
 if __name__ == '__main__':
