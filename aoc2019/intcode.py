@@ -1,7 +1,12 @@
-def computer(intcode, input_list, ip=0, feedback=False):
+def computer(intcode, input_list, ip=0, feedback=False, extend=False):
     input_list = iter(input_list)
 
-    valid_opcodes = list(range(1, 9))
+    base = 0
+
+    if extend:
+        intcode.extend([0] * 10000)
+
+    valid_opcodes = list(range(1, 10))
     valid_opcodes.append(99)
 
     def get_params(nparams):
@@ -13,7 +18,7 @@ def computer(intcode, input_list, ip=0, feedback=False):
         if len(op_str) != 1:
             for i, mode in enumerate(op_str[:-2][::-1]):
                 mode = int(mode)
-                assert mode in [0, 1]
+                assert mode in [0, 1, 2]
                 modes[i] = mode
 
         # get params
@@ -24,6 +29,10 @@ def computer(intcode, input_list, ip=0, feedback=False):
             if i < nparams or op not in [1, 2, 3, 7, 8]:
                 if mode == 0:
                     param = intcode[param]  # position case
+                elif mode == 2:
+                    param = intcode[param + base]
+            elif mode == 2:
+                param += base
             params.append(param)
         return params
 
@@ -81,6 +90,10 @@ def computer(intcode, input_list, ip=0, feedback=False):
             else:
                 intcode[p3] = 0
             ip += 4
+        elif opcode == 9:
+            p1, = get_params(1)
+            base += p1
+            ip += 2
         else:
             raise ValueError
 
