@@ -52,9 +52,14 @@ def main():
 
     print_res(day, 2, min(sums))
 
-    # optionally plot paths
-    # plt.scatter(df_first.loc[:, "x1"], df_first.loc[:, "y1"], s=1, c="red")
-    # plt.scatter(df_second.loc[:, "x2"], df_second.loc[:, "y2"], s=1)
+    # plot paths
+    plt.figure(figsize=(8, 5))
+    plt.plot(df_first.loc[:, "x1"], df_first.loc[:, "y1"], "r-", lw=1)
+    plt.plot(df_second.loc[:, "x2"], df_second.loc[:, "y2"], "-", lw=1)
+    plt.tick_params(axis="both", labelsize=8)
+    plt.title("Crossed wire paths")
+    plt.tight_layout()
+    plt.savefig(f"{day}_wires.svg")
     # plt.show()
 
 
