@@ -18,6 +18,7 @@ def main():
             if asteroid_map[y, x] == 1:
                 asteroid_coords.append([x, y])
 
+    asteroid_max_los = {}
     asteroid_los = {}
 
     for station in asteroid_coords:
@@ -29,11 +30,12 @@ def main():
                 gcd = abs(math.gcd(dx, dy))
                 in_los.add((dx // gcd, dy // gcd))
 
-        asteroid_los[tuple(station)] = len(in_los)
+        asteroid_los[tuple(station)] = in_los
+        asteroid_max_los[tuple(station)] = len(in_los)
 
-    max_los = max(asteroid_los, key=asteroid_los.get)
+    max_los = max(asteroid_max_los, key=asteroid_max_los.get)
 
-    print_res(day, 1, asteroid_los[max_los])
+    print_res(day, 1, asteroid_max_los[max_los])
 
 
 if __name__ == '__main__':
