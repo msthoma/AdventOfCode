@@ -1,6 +1,9 @@
 import math
 
 import numpy as np
+from matplotlib import animation
+from matplotlib import pyplot as plt
+from matplotlib.animation import FFMpegWriter
 
 from utils.utils import day_name, input_fp, print_res
 
@@ -40,8 +43,13 @@ def main():
 
     # part 2
     los_angles = {math.atan2(y, x): (x, y) for x, y in los_asteroids_rel[station]}
+    print(los_angles)
+    test = sorted(los_angles.values(), reverse=True)
+    los_destroyed_order = sorted(los_angles.keys(), reverse=True)
+    order = np.array([station + np.array(los_angles[k]) for k in sorted(los_angles.keys(), reverse=True)])
+    print(len(asteroid_coords), len(order))
 
-    asteroid_200th = los_angles[sorted(los_angles.keys(), reverse=True)[200 - 1]]
+    asteroid_200th = los_angles[los_destroyed_order[200 - 1]]
     dx, dy = asteroid_200th
 
     x, y = station[0] + dx, station[1] + dy
@@ -50,6 +58,47 @@ def main():
         x, y = x + dx, y + dy
 
     print_res(day, 2, y * 100 + x)
+
+    # part 2 asteroid destruction animation
+    asteroid_coords = np.array(asteroid_coords)
+
+    fig = plt.figure()
+    ax = plt.axes(xlim=(-2, 34), ylim=(34, -2), aspect="equal")
+    ax.xaxis.tick_top()
+    sct = ax.scatter([], [], s=15)
+    annotation = ax.annotate("",
+                             xy=station, xycoords='data',
+                             xytext=station, textcoords='data',
+                             arrowprops=dict(arrowstyle="-",
+                                             edgecolor="red",
+                                             connectionstyle="arc3"),
+                             )
+    annotation.set_animated(True)
+
+    def init():
+        return sct, annotation
+
+    def update(i):
+        # mask destroyed from coords
+        destroyed_mask = np.ones(len(order), dtype=bool)
+        destroyed_mask[np.arange(i)] = False
+        # plot again
+        sct.set_offsets(order[destroyed_mask])
+        annotation.xy = order[i]
+        # annotation.xytext = station
+        # annotation = ax.annotate("",
+        #                           xy=order[i], xycoords='data',
+        #                           xytext=station, textcoords='data',
+        #                           arrowprops=dict(arrowstyle="-",
+        #                                           edgecolor="red",
+        #                                           connectionstyle="arc3"),
+        #                           )
+        return sct, annotation
+
+    anim = animation.FuncAnimation(fig, update, frames=20, init_func=init, interval=200, blit=True)
+    # writer = FFMpegWriter(fps=10, bitrate=1800)
+    anim.save('basic_animation.mp4', writer="imagemagick")
+    plt.show()
 
 
 if __name__ == '__main__':
