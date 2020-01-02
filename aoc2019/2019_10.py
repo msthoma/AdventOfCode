@@ -42,11 +42,10 @@ def main():
 
     # part 2
     los_angles = {math.atan2(y, x): (x, y) for x, y in los_asteroids_rel[station]}
-    test = sorted(los_angles.values(), reverse=True)
-    los_destroyed_order = sorted(los_angles.keys(), reverse=True)
-    order = np.array([station + np.array(los_angles[k]) for k in sorted(los_angles.keys(), reverse=True)])
 
-    asteroid_200th = los_angles[los_destroyed_order[200 - 1]]
+    los_destroyed_order = np.array([station + np.array(los_angles[k]) for k in sorted(los_angles.keys(), reverse=True)])
+
+    asteroid_200th = los_angles[sorted(los_angles.keys(), reverse=True)[200 - 1]]
     dx, dy = asteroid_200th
 
     x, y = station[0] + dx, station[1] + dy
@@ -79,7 +78,7 @@ def main():
 
     def update(i):
         # mask destroyed asteroid coords so far
-        destroyed = order[:i, ]
+        destroyed = los_destroyed_order[:i, ]
         destroyed_mask = np.ones(len(asteroid_coords), dtype=bool)
         # https://stackoverflow.com/a/38674038 "Find the row indexes of several values in a numpy array"
         destroyed_mask[np.where((asteroid_coords == destroyed[:, None]).all(-1))[1]] = False
@@ -87,10 +86,10 @@ def main():
         # replace scatter with remaining asteroids and new laser beam
         sct.set_offsets(asteroid_coords[destroyed_mask])
         if i == n_frames - 1:
-            title.set_text(f"ANSWER: {n_frames}th asteroid at {order[i]}")
+            title.set_text(f"ANSWER: {n_frames}th asteroid at {los_destroyed_order[i]}")
         else:
-            title.set_text(f"Step {i + 1}: Destroying asteroid at {order[i]}")
-        annotation.xy = order[i]
+            title.set_text(f"Step {i + 1}: Destroying asteroid at {los_destroyed_order[i]}")
+        annotation.xy = los_destroyed_order[i]
         return sct, annotation, title
 
     def save_progress(i, n):
@@ -100,7 +99,7 @@ def main():
                                    init_func=init, frames=n_frames,
                                    interval=200, repeat_delay=3000, blit=True)
 
-    anim.save(f"{day}_animation.gif", writer="imagemagick", progress_callback=save_progress)
+    # anim.save(f"{day}_animation.gif", writer="imagemagick", progress_callback=save_progress)
     plt.show()
 
 
