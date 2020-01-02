@@ -3,7 +3,6 @@ import math
 import numpy as np
 from matplotlib import animation
 from matplotlib import pyplot as plt
-from matplotlib.animation import FFMpegWriter
 
 from utils.utils import day_name, input_fp, print_res
 
@@ -43,11 +42,9 @@ def main():
 
     # part 2
     los_angles = {math.atan2(y, x): (x, y) for x, y in los_asteroids_rel[station]}
-    print(los_angles)
     test = sorted(los_angles.values(), reverse=True)
     los_destroyed_order = sorted(los_angles.keys(), reverse=True)
     order = np.array([station + np.array(los_angles[k]) for k in sorted(los_angles.keys(), reverse=True)])
-    print(len(asteroid_coords), len(order))
 
     asteroid_200th = los_angles[los_destroyed_order[200 - 1]]
     dx, dy = asteroid_200th
@@ -60,12 +57,14 @@ def main():
     print_res(day, 2, y * 100 + x)
 
     # part 2 asteroid destruction animation
+    n_frames = 200
     asteroid_coords = np.array(asteroid_coords)
 
-    fig = plt.figure()
-    ax = plt.axes(xlim=(-2, 34), ylim=(34, -2), aspect="equal")
+    fig = plt.figure(figsize=(5, 5))
+    ax = plt.axes(xlim=(-3, 35), ylim=(35, -3), aspect="equal")
     ax.xaxis.tick_top()
     sct = ax.scatter([], [], s=15)
+    title = ax.text(0.5, 0.02, "", transform=ax.transAxes, ha="center")
     annotation = ax.annotate("",
                              xy=station, xycoords='data',
                              xytext=station, textcoords='data',
@@ -76,28 +75,32 @@ def main():
     annotation.set_animated(True)
 
     def init():
-        return sct, annotation
+        return sct, annotation, title
 
     def update(i):
-        # mask destroyed from coords
-        destroyed_mask = np.ones(len(order), dtype=bool)
-        destroyed_mask[np.arange(i)] = False
-        # plot again
-        sct.set_offsets(order[destroyed_mask])
-        annotation.xy = order[i]
-        # annotation.xytext = station
-        # annotation = ax.annotate("",
-        #                           xy=order[i], xycoords='data',
-        #                           xytext=station, textcoords='data',
-        #                           arrowprops=dict(arrowstyle="-",
-        #                                           edgecolor="red",
-        #                                           connectionstyle="arc3"),
-        #                           )
-        return sct, annotation
+        # mask destroyed asteroid coords so far
+        destroyed = order[:i, ]
+        destroyed_mask = np.ones(len(asteroid_coords), dtype=bool)
+        # https://stackoverflow.com/a/38674038 "Find the row indexes of several values in a numpy array"
+        destroyed_mask[np.where((asteroid_coords == destroyed[:, None]).all(-1))[1]] = False
 
-    anim = animation.FuncAnimation(fig, update, frames=20, init_func=init, interval=200, blit=True)
-    # writer = FFMpegWriter(fps=10, bitrate=1800)
-    anim.save('basic_animation.mp4', writer="imagemagick")
+        # replace scatter with remaining asteroids and new laser beam
+        sct.set_offsets(asteroid_coords[destroyed_mask])
+        if i == n_frames - 1:
+            title.set_text(f"ANSWER: {n_frames}th asteroid at {order[i]}")
+        else:
+            title.set_text(f"Step {i + 1}: Destroying asteroid at {order[i]}")
+        annotation.xy = order[i]
+        return sct, annotation, title
+
+    def save_progress(i, n):
+        print(f'\rSaving to gif... (frame {i} of {n})', end="")
+
+    anim = animation.FuncAnimation(fig, update,
+                                   init_func=init, frames=n_frames,
+                                   interval=200, repeat_delay=3000, blit=True)
+
+    anim.save(f"{day}_animation.gif", writer="imagemagick", progress_callback=save_progress)
     plt.show()
 
 
