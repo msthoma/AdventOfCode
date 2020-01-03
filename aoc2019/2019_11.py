@@ -31,6 +31,9 @@ def run_robot(intcode, start_color=0):
     robot_direction = ["U"]
     panel_colors = defaultdict(int)
 
+    if start_color == 1:
+        panel_colors[robot_path[-1]] = 1
+
     ip = 0
     while True:
         current_panel = robot_path[-1]
@@ -69,7 +72,7 @@ def main():
     with open(input_fp(day), "r") as f:
         intcode = [int(i) for i in f.read().split(sep=",")]
 
-    robot_path = run_robot(intcode.copy())[1]
+    robot_path = run_robot(intcode.copy(), start_color=1)[1]
 
     print_res(day, 1, len(set(robot_path)))
 
