@@ -26,35 +26,33 @@ def turn(position, direction, instruction):
     return (x, y), new_dir
 
 
-def main():
-    day = day_name()
-    with open(input_fp(day), "r") as f:
-        intcode = [int(i) for i in f.read().split(sep=",")]
-
-    # print(intcode)
-
-    robot_path = [(0, 0)]  # answer will be set of this
+def run_robot(intcode, start_color=0):
+    robot_path = [(0, 0)]
     robot_direction = ["U"]
-    panel_color = defaultdict(int)
+    panel_colors = defaultdict(int)
 
-    halt = False
     ip = 0
     while True:
         current_panel = robot_path[-1]
-        current_color = panel_color[current_panel]
+        current_color = panel_colors[current_panel]
         # get color
         res = computer(intcode, [current_color], ip=ip, feedback=True, extend=True)
+
         # check if finished
         halt = res["halt"]
         if halt:
             break
+
         # paint panel with color
-        panel_color[robot_path[-1]] = res["output"][0]
+        panel_colors[robot_path[-1]] = res["output"][0]
+
+        # update ip
         ip = res["ip"]
 
         # get instruction
         res = computer(intcode, [current_color], ip=ip, feedback=True)
         instruction = res["output"][0]
+
         # update ip
         ip = res["ip"]
 
@@ -62,6 +60,16 @@ def main():
 
         robot_path.append(new_pos)
         robot_direction.append(new_dir)
+
+    return panel_colors, robot_path
+
+
+def main():
+    day = day_name()
+    with open(input_fp(day), "r") as f:
+        intcode = [int(i) for i in f.read().split(sep=",")]
+
+    robot_path = run_robot(intcode.copy())[1]
 
     print_res(day, 1, len(set(robot_path)))
 
