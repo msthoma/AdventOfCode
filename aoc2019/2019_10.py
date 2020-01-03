@@ -99,7 +99,7 @@ def main():
                                    init_func=init, frames=n_frames,
                                    interval=200, repeat_delay=3000, blit=True)
 
-    # anim.save(f"{day}_animation.gif", writer="imagemagick", progress_callback=save_progress)
+    anim.save(f"{day}_animation.gif", writer="imagemagick", progress_callback=save_progress)
     plt.show()
 
 
