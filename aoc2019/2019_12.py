@@ -3,6 +3,22 @@ from itertools import combinations
 
 from utils.utils import day_name, input_fp, print_res
 
+dimensions = ["x", "y", "z"]
+moons = ["Io", "Europa", "Ganymede", "Callisto"]
+
+
+def simulate(positions, velocities):
+    for moon1, moon2 in combinations(positions.keys(), 2):
+        if positions[moon1] < positions[moon2]:
+            velocities[moon1] += 1
+            velocities[moon2] -= 1
+        elif positions[moon1] > positions[moon2]:
+            velocities[moon1] -= 1
+            velocities[moon2] += 1
+
+    for moon in moons:
+        positions[moon] += velocities[moon]
+
 
 def main():
     day = day_name()
@@ -12,8 +28,6 @@ def main():
     with open(input_fp(day), "r") as f:
         data = [re.match(pattern, line).groups() for line in f.readlines()]
 
-    dimensions = ["x", "y", "z"]
-    moons = ["Io", "Europa", "Ganymede", "Callisto"]
     positions = {}
     velocities = {}
 
