@@ -32,46 +32,39 @@ def main():
         data = [re.match(pattern, line).groups() for line in f.readlines()]
 
     # part 1
-    positions = {}
-    velocities = {}
+    # arrange dictionaries based on dimension
+    positions = {k: {} for k in dimensions}
+    velocities = {k: {} for k in dimensions}
+    for i, dim in enumerate(positions.keys()):
+        for j, moon in enumerate(moons):
+            positions[dim][moon] = int(data[j][i])
+            velocities[dim][moon] = 0
 
-    for [x, y, z], moon in zip(data, moons):
-        positions[moon] = {"x": int(x), "y": int(y), "z": int(z)}
-        velocities[moon] = {"x": 0, "y": 0, "z": 0}
+    # make copies of dictionaries
+    pos1 = deepcopy(positions)
+    vel1 = deepcopy(velocities)
 
+    # simulate 1000 steps
     for _ in range(1000):
-        for moon1, moon2 in combinations(positions.keys(), 2):
-            for dim in dimensions:
-                if positions[moon1][dim] < positions[moon2][dim]:
-                    velocities[moon1][dim] += 1
-                    velocities[moon2][dim] -= 1
-                elif positions[moon1][dim] > positions[moon2][dim]:
-                    velocities[moon1][dim] -= 1
-                    velocities[moon2][dim] += 1
-
-        for moon in moons:
-            for dim in dimensions:
-                positions[moon][dim] += velocities[moon][dim]
+        for dim in dimensions:
+            simulate(pos1[dim], vel1[dim])
 
     # calculate total energy
     total = 0
     for moon in moons:
-        total += sum(abs(p) for p in positions[moon].values()) * sum(abs(v) for v in velocities[moon].values())
+        positional = 0
+        kinetic = 0
+        for dim in dimensions:
+            positional += abs(pos1[dim][moon])
+            kinetic += abs(vel1[dim][moon])
+        total += positional * kinetic
 
     print_res(day, 1, total)
 
     # part 2
-    # arrange dictionaries based on dimension
-    pos1 = {k: {} for k in dimensions}
-    vel1 = {k: {} for k in dimensions}
-    for i, dim in enumerate(pos1.keys()):
-        for j, moon in enumerate(moons):
-            pos1[dim][moon] = int(data[j][i])
-            vel1[dim][moon] = 0
-
     # make copies to compare with original after each simulation
-    pos2 = deepcopy(pos1)
-    vel2 = deepcopy(vel1)
+    pos2 = deepcopy(positions)
+    vel2 = deepcopy(velocities)
 
     # simulate each dimension separately, until it reaches values identical to the original
     steps_all = []
@@ -80,7 +73,7 @@ def main():
         while True:
             simulate(pos2[dim], vel2[dim])
             steps += 1
-            if pos1[dim] == pos2[dim] and vel1[dim] == vel2[dim]:
+            if positions[dim] == pos2[dim] and velocities[dim] == vel2[dim]:
                 steps_all.append(steps)
                 break
 
