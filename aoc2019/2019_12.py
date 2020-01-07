@@ -1,4 +1,5 @@
 import re
+from collections import defaultdict
 from copy import deepcopy
 from itertools import combinations
 
@@ -80,6 +81,27 @@ def main():
     # answer is the least common multiple of steps for each dimension
     lcm = np.lcm.reduce(steps_all)
     print_res(day, 2, lcm)
+
+    # save locations for animating with blender
+    pos3 = deepcopy(positions)
+    vel3 = deepcopy(velocities)
+    print(pos3)
+
+    path_dict = defaultdict(list)
+    for moon in moons:
+        x, y, z = pos3["x"][moon], pos3["y"][moon], pos3["z"][moon]
+        path_dict[moon].append((x, y, z))
+    for _ in range(1000):
+        for dim in dimensions:
+            simulate(pos3[dim], vel3[dim])
+
+        for moon in moons:
+            x, y, z = pos3["x"][moon], pos3["y"][moon], pos3["z"][moon]
+            path_dict[moon].append((x, y, z))
+
+    for moon in path_dict:
+        with open(f"{moon}_path.csv", "w+") as f:
+            f.write("\n".join(str(pos).strip("(").strip(")").replace(" ", "") for pos in path_dict[moon]))
 
 
 if __name__ == '__main__':
