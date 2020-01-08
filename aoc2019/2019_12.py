@@ -11,6 +11,30 @@ dimensions = ["x", "y", "z"]
 moons = ["Io", "Europa", "Ganymede", "Callisto"]
 
 
+def blender_simulation():
+    # used in Blender to specify paths for simulated moons
+
+    # import bpy
+
+    # moons = ["Callisto", "Europa", "Ganymede", "Io"]
+
+    for moon in moons:
+        with open(f"/home/marios/moon animation/{moon}_path.csv") as f:
+            path = f.readlines()
+
+        positions = [[int(i) for i in line.strip("\n").split(",")] for line in path]
+
+        ob = bpy.data.objects[moon]
+
+        frame_num = 0
+
+        for position in positions:
+            bpy.context.scene.frame_set(frame_num)
+            ob.location = position
+            ob.keyframe_insert(data_path="location", index=-1)
+            frame_num += 2
+
+
 def simulate(positions, velocities):
     for moon1, moon2 in combinations(positions.keys(), 2):
         if positions[moon1] < positions[moon2]:
