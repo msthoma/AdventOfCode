@@ -14,9 +14,9 @@ moons = ["Io", "Europa", "Ganymede", "Callisto"]
 def blender_simulation():
     # used in Blender to specify paths for simulated moons
 
-    # import bpy
+    import bpy
 
-    # moons = ["Callisto", "Europa", "Ganymede", "Io"]
+    moons = ["Callisto", "Europa", "Ganymede", "Io"]
 
     for moon in moons:
         with open(f"/home/marios/moon animation/{moon}_path.csv") as f:
