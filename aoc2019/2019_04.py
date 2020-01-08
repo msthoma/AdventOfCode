@@ -1,6 +1,6 @@
 import re
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import day_name, print_res
 
 
 def main():
