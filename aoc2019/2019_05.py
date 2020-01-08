@@ -79,8 +79,8 @@ def main():
 
     input_data = [int(i) for i in input_data]
 
-    print_res(day, 1, list(intcode.computer(input_data.copy(), [1]))[-1])
-    print_res(day, 2, list(intcode.computer(input_data.copy(), [5]))[-1])
+    print_res(day, 1, intcode.computer(input_data.copy(), [1])["output"][-1])
+    print_res(day, 2, intcode.computer(input_data.copy(), [5])["output"][-1])
 
 
 if __name__ == '__main__':
