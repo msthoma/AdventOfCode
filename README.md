@@ -4,7 +4,7 @@ My solutions to the [Advent of Code](https://adventofcode.com/) challenge.
 ### [Day 12](https://adventofcode.com/2019/day/12)
 3D animation of 4 Jupiter moons with Blender, using the coordinates from the "N-Body problem" of day 12.
 
-![Part 2](aoc2019/2019_12_moon_animation.mkv)
+![Part 2](aoc2019/2019_12_moon_animation.gif)
 
 ### [Day 10](https://adventofcode.com/2019/day/10)
 Destroying asteroids with a laser beam. 
