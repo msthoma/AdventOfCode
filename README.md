@@ -8,7 +8,7 @@ Destroying asteroids with a laser beam.
 
 ### [Day 8](https://adventofcode.com/2019/day/8)
 
-![Part 2](aoc2019/2019_8_2_img.svg) 
+![Part 2](aoc2019/2019_08_2_img.svg) 
 
 ### [Day 3](https://adventofcode.com/2019/day/3)
-![Part 2](aoc2019/2019_3_wires.svg)
+![Part 2](aoc2019/2019_03_wires.svg)

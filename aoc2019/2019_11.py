@@ -52,6 +52,9 @@ def run_robot(intcode, start_color=0):
         # update ip
         ip = res["ip"]
 
+        if start_color == 1:
+            panel_colors[robot_path[-1]] = 0
+
         # get instruction
         res = computer(intcode, [current_color], ip=ip, feedback=True)
         instruction = res["output"][0]
