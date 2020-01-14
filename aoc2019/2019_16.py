@@ -1,5 +1,3 @@
-import time
-
 from tqdm import tqdm
 
 from utils.utils import day_name, input_fp, print_res
@@ -26,8 +24,6 @@ def run_fft(signal, times):
 
 
 def main():
-    start = time.time()
-
     day = day_name()
 
     with open(input_fp(day), "r") as f:
@@ -37,25 +33,25 @@ def main():
     print_res(day, 1, "".join(str(i) for i in run_fft(data.copy(), 100)[:8]))
 
     # part 2
-    # data = [int(i) for i in "03036732577212944063491565474664"]
     offset = int("".join(str(i) for i in data[:7]))
     data_2 = data * 10000
     data_2 = data_2[offset:]  # pattern until offset will be all zeros, so can be ignored
     leng = len(data_2)
 
+    t = tqdm(total=100)
+    t.set_description("Calculating part 2")
     for _ in range(100):
         temp_data = []
-        t = tqdm(total=leng)
-        for i in range(0, leng):
-            temp_data.append(sum(data_2[i:]) % 10)
-            t.update()
+        total_sum = sum(data_2)
+        temp_data.append(total_sum % 10)
+        for i in range(1, leng):
+            total_sum -= data_2[i - 1]
+            temp_data.append(total_sum % 10)
+        t.update()
         data_2 = temp_data
-        t.close()
+    t.close()
 
     print_res(day, 2, "".join(str(i) for i in data_2[:8]))
-
-    end = time.time()
-    print(end - start)
 
 
 if __name__ == '__main__':
