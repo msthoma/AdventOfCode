@@ -1,6 +1,38 @@
 import re
+from collections import defaultdict
 
-from utils.utils import day_name, input_fp
+from utils.utils import day_name, input_fp, print_res
+
+
+def get_reqs(reactions, fuel_amount=1, target="ORE"):
+    needed = {"FUEL": fuel_amount}
+    have = defaultdict(int)
+
+    while True:
+        try:
+            needed_ing = next(ing for ing in needed if ing != target)
+        except StopIteration:
+            break
+
+        q_needed = reactions[needed_ing]["amount"]
+
+        created = needed[needed_ing] // q_needed
+        still_needed = needed[needed_ing] % q_needed
+
+        if still_needed == 0:  # fulfilled need for ingredient
+            del needed[needed_ing]
+        else:
+            del needed[needed_ing]
+            have[needed_ing] = q_needed - still_needed
+            created += 1
+
+        for ing, q in reactions[needed_ing].items():
+            if ing == "amount":
+                continue
+            needed[ing] = needed.get(ing, 0) - have[ing] + q * created
+            del have[ing]
+
+    return needed[target]
 
 
 def main():
@@ -13,15 +45,14 @@ def main():
 
     data = [re.findall(pattern, line) for line in data]
 
-    print(data)
-
     # part 1
-    reactions = []
+    reactions = {}
     for reaction in data:
         reaction = [(int(q), m) for q, m in reaction]
-        reactions.append(reaction)
+        reactions[reaction[-1][1]] = {k: v for v, k in reaction[:-1]}
+        reactions[reaction[-1][1]]["amount"] = reaction[-1][0]
 
-    print(reactions)
+    print_res(day, 1, get_reqs(reactions, fuel_amount=1))
 
 
 if __name__ == '__main__':
