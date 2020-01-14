@@ -54,6 +54,21 @@ def main():
 
     print_res(day, 1, get_reqs(reactions, fuel_amount=1))
 
+    # part 2 - binary search to maximum FUEL with a trillion ORE
+    goal = 1000000000000
+    minimum, maximum = 1, 2
+    while get_reqs(reactions, fuel_amount=maximum) < goal:
+        minimum = maximum
+        maximum = maximum * 2
+    while maximum - minimum >= 2:
+        mid = minimum + (maximum - minimum) // 2
+        if get_reqs(reactions, fuel_amount=mid) > goal:
+            maximum = mid
+        else:
+            minimum = mid
+
+    print_res(day, 2, minimum)
+
 
 if __name__ == '__main__':
     main()
