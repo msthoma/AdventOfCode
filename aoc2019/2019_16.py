@@ -14,12 +14,16 @@ def get_pattern(i, leng):
 
 def run_fft(signal, times):
     leng = len(signal)
+    t = tqdm(total=times)
+    t.set_description("Calculating part 1")
     for _ in range(times):
         temp_data = []
         for i in range(1, leng + 1):
             pat = get_pattern(i, leng)
             temp_data.append(abs(sum(si * pv for si, pv in zip(signal, pat))) % 10)
         signal = temp_data
+        t.update()
+    t.close()
     return signal
 
 
@@ -47,8 +51,8 @@ def main():
         for i in range(1, leng):
             total_sum -= data_2[i - 1]
             temp_data.append(total_sum % 10)
-        t.update()
         data_2 = temp_data
+        t.update()
     t.close()
 
     print_res(day, 2, "".join(str(i) for i in data_2[:8]))
