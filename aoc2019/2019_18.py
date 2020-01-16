@@ -1,4 +1,5 @@
 import itertools
+from collections import deque
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -6,11 +7,43 @@ import numpy as np
 from utils.utils import day_name, input_fp
 
 
+def shortest_path(current_pt, grid, havekeys):
+    pass
+
+
+def bfs_keys(current_pt, grid, havekeys):
+    """
+    Determines reachable keys from current position
+    """
+    keys = {}
+    pt_distances = {current_pt: 0}
+    bfs = deque([current_pt])
+
+    while bfs:
+        new_pt = bfs.popleft()
+
+        for ngbr in get_neighbours(new_pt, grid):
+            if ngbr in pt_distances:  # already visited this point
+                continue
+
+            pt_distances[ngbr] = pt_distances[new_pt] + 1
+
+            point_type = grid[new_pt[0]][new_pt[1]]
+            if point_type not in [".", "@"]:
+                if point_type.isupper() and point_type.lower() not in havekeys:  # door and do not have key
+                    continue
+                elif point_type.islower() and point_type not in havekeys:  # found key
+                    keys[point_type] = ngbr, pt_distances[ngbr]
+            else:
+                bfs.append(ngbr)
+    return keys
+
+
 def get_neighbours(point, grid):
     """
     Determines reachable neighbours from given point
     """
-    # possible movements, diagonally impossible
+    # possible movements, diagonally is impossible
     dx, dy = [-1, 0, 1, 0], [0, 1, 0, -1]
 
     neighbours = []
@@ -24,19 +57,6 @@ def get_neighbours(point, grid):
         neighbours.append((x, y))
 
     return neighbours
-
-
-def paths(graph, start, end):
-    todo = [[start, [start]]]
-    while 0 < len(todo):
-        (node, path) = todo.pop(0)
-        for next_node in graph[node]:
-            if next_node in path:
-                continue
-            elif next_node == end:
-                yield path + [next_node]
-            else:
-                todo.append([next_node, path + [next_node]])
 
 
 def main():
@@ -63,27 +83,18 @@ def main():
     plt.imshow(data_int, cmap='gray')
     door_bbox = dict(boxstyle="square,pad=0.2", fc="chocolate", ec="saddlebrown", lw=1)
     key_bbox = dict(boxstyle="circle,pad=0.2", fc="yellow", ec="gold", lw=1)
-    plt.annotate(robot, (40, 40))
+    plt.annotate("@", np.where(grid_np == "@"))
     for dk in doors_keys:
+        if dk == "R":
+            print(np.where(grid_np == dk))
         plt.annotate(dk, xy=np.where(grid_np == dk), ha='center', va='center', size=7,
                      bbox=door_bbox if dk.isupper() else key_bbox)
-    # plt.savefig(f"{day}_maze.svg")
-    plt.show()
-    print(robot)
+    # plt.savefig(f"{day}_maze.pdf")
+
+    print(bfs_keys((40, 40), grid, ""))
+    # plt.show()
+
     # part 2
-
-    # graph = {'A': ['B', 'C'],
-    #          'B': ['C', 'D'],
-    #          'C': ['D'],
-    #          'D': ['C'],
-    #          'E': ['F'],
-    #          'F': ['C']}
-    #
-    # for path in paths(graph, 'A', 'D'):
-    #     print(path)
-
-    print(get_neighbours((1, 2), grid))
-    print(data_int.shape)
 
 
 if __name__ == '__main__':
