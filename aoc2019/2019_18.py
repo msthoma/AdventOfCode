@@ -9,11 +9,11 @@ from utils.utils import day_name, input_fp, print_res
 pts_tested = {}  # saves already tested positions to avoid re-calculations
 
 
-def shortest_path(current_pt, grid, havekeys):
-    hk = "".join(sorted(havekeys))
+def shortest_path(current_pt, grid, found_keys):
+    hk = "".join(sorted(found_keys))
     if (current_pt, hk) in pts_tested:
         return pts_tested[current_pt, hk]
-    keys = bfs_keys(current_pt, grid, havekeys)
+    keys = bfs_keys(current_pt, grid, found_keys)
     if len(keys) == 0:  # no keys left, finished
         path_len = 0
     else:
@@ -21,14 +21,13 @@ def shortest_path(current_pt, grid, havekeys):
         for key, (pt, dist) in keys.items():
             # print(key, pt, dist)
             # hk.append(key)
-            # print(havekeys)
             poss_paths.append(dist + shortest_path(pt, grid, hk + key))
         path_len = min(poss_paths)
     pts_tested[current_pt, hk] = path_len
     return path_len
 
 
-def bfs_keys(current_pt, grid, havekeys):
+def bfs_keys(current_pt, grid, found_keys):
     """
     Performs breadth-first search, to find all reachable keys and their distance from current position
     """
@@ -47,9 +46,9 @@ def bfs_keys(current_pt, grid, havekeys):
 
             point_type = grid[ngbr[0]][ngbr[1]]
 
-            if point_type.isupper() and point_type.lower() not in havekeys:  # door and do not have key
+            if point_type.isupper() and point_type.lower() not in found_keys:  # door and do not have key
                 continue
-            elif point_type.islower() and point_type not in havekeys:  # found key
+            elif point_type.islower() and point_type not in found_keys:  # found key
                 keys[point_type] = ngbr, pt_distances[ngbr]
             else:
                 bfs.append(ngbr)
