@@ -1,4 +1,5 @@
 import itertools
+import time
 from collections import deque
 
 import matplotlib.pyplot as plt
@@ -10,20 +11,18 @@ pts_tested = {}  # saves already tested positions to avoid re-calculations
 
 
 def shortest_path(current_pt, grid, found_keys):
-    hk = "".join(sorted(found_keys))
-    if (current_pt, hk) in pts_tested:
-        return pts_tested[current_pt, hk]
+    found_keys = "".join(sorted(found_keys))
+    if (current_pt, found_keys) in pts_tested:
+        return pts_tested[current_pt, found_keys]
     keys = bfs_keys(current_pt, grid, found_keys)
     if len(keys) == 0:  # no keys left, finished
         path_len = 0
     else:
         poss_paths = []
         for key, (pt, dist) in keys.items():
-            # print(key, pt, dist)
-            # hk.append(key)
-            poss_paths.append(dist + shortest_path(pt, grid, hk + key))
+            poss_paths.append(dist + shortest_path(pt, grid, found_keys + key))
         path_len = min(poss_paths)
-    pts_tested[current_pt, hk] = path_len
+    pts_tested[current_pt, found_keys] = path_len
     return path_len
 
 
@@ -79,6 +78,7 @@ def get_neighbours(point, grid):
 
 
 def main():
+    start = time.time()
     day = day_name()
 
     with open(input_fp(day), "r") as f:
@@ -86,7 +86,7 @@ def main():
 
     # part 1
     print_res(day, 1, shortest_path((40, 40), grid, ""))
-
+    print("Elapsed time:", time.time() - start)
     # part 2
 
     # animation
