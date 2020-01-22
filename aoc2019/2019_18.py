@@ -10,6 +10,14 @@ from utils.utils import day_name, input_fp, print_res
 pts_tested = {}  # saves already tested positions to avoid re-calculations
 
 
+def part_2_reachable(current_pt, grid, found_keys):
+    keys = {}
+    for quadrant, c_pt in enumerate(current_pt):
+        for key, (pt, dist) in bfs_keys(c_pt, grid, found_keys).items():
+            keys[key] = pt, dist, quadrant
+    return keys
+
+
 def shortest_path(current_pt, grid, found_keys):
     found_keys = "".join(sorted(found_keys))
     if (current_pt, found_keys) in pts_tested:
@@ -78,15 +86,16 @@ def get_neighbours(point, grid):
 
 
 def main():
-    start = time.time()
     day = day_name()
 
     with open(input_fp(day), "r") as f:
         grid = [[c for c in line.strip()] for line in f.readlines()]
 
     # part 1
+    start = time.time()
+    print("Calculating part 1...")
     print_res(day, 1, shortest_path((40, 40), grid, ""))
-    print("Elapsed time:", time.time() - start)
+    print("Elapsed time: {:.2f}s".format(time.time() - start))
     # part 2
 
     # animation
