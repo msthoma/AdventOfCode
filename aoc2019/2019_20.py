@@ -1,5 +1,6 @@
 from collections import defaultdict, deque
-from utils.utils import day_name, input_fp
+
+from utils.utils import day_name, input_fp, print_res
 
 
 def get_neighbours(point, grid, portals):
@@ -56,7 +57,25 @@ def main():
             portals[p1] = p2
             portals[p2] = p1
 
-    print(get_neighbours((2, 37), grid, portals))
+    start, end = portal_pairs["AA"][0], portal_pairs["ZZ"][0]
+    bfs = deque([start])
+    visited = {start: 0}
+    answered = False
+    while bfs:
+        pt = bfs.popleft()
+
+        neighbours = get_neighbours(pt, grid, portals)
+        for neighbour in neighbours:
+            if neighbour == end:
+                print_res(day, 1, visited[pt] + 1)
+                answered = True
+            elif neighbour in visited:
+                continue
+            else:
+                visited[neighbour] = visited[pt] + 1
+                bfs.append(neighbour)
+        if answered:
+            break
 
     # part 2
 
