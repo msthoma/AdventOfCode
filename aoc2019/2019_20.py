@@ -1,4 +1,3 @@
-import numpy as np
 from collections import defaultdict, deque
 from utils.utils import day_name, input_fp
 
@@ -31,8 +30,6 @@ def main():
         grid = [[c for c in line.strip("\n")] for line in f.readlines()]
 
     # part 1
-    grid_np = np.array(grid)
-    print(grid_np[:, 37])
     portal_pairs = defaultdict(list)
     for i in range(len(grid)):
         for j in range(len(grid[0])):
