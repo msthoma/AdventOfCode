@@ -34,6 +34,23 @@ def shortest_path(current_pt, grid, found_keys):
     return path_len
 
 
+def shortest_path_p2(current_pts, grid, found_keys):
+    found_keys = "".join(sorted(found_keys))
+    if (current_pts, found_keys) in pts_tested:
+        return pts_tested[current_pts, found_keys]
+    keys = part_2_reachable(current_pts, grid, found_keys)
+    if len(keys) == 0:  # no keys left, finished
+        path_len = 0
+    else:
+        poss_paths = []
+        for key, (pt, dist, quadrant) in keys.items():
+            # n_current_pts =
+            poss_paths.append(dist + shortest_path(pt, grid, found_keys + key))
+        path_len = min(poss_paths)
+    pts_tested[current_pts, found_keys] = path_len
+    return path_len
+
+
 def bfs_keys(current_pt, grid, found_keys):
     """
     Performs breadth-first search, to find all reachable keys and their distance from current position
@@ -91,13 +108,6 @@ def main():
     with open(input_fp(day), "r") as f:
         grid = [[c for c in line.strip()] for line in f.readlines()]
 
-    # part 1
-    start = time.time()
-    print("Calculating part 1...")
-    print_res(day, 1, shortest_path((40, 40), grid, ""))
-    print("Elapsed time: {:.2f}s".format(time.time() - start))
-    # part 2
-
     # animation
     unique = set(itertools.chain.from_iterable(grid))
     unique -= {'#', '.', '@'}
@@ -123,7 +133,27 @@ def main():
                      bbox=door_bbox if dk.isupper() else key_bbox)
     # plt.savefig(f"{day}_maze.pdf")
 
-    plt.show()
+    # plt.show()
+
+    # part 1
+    time_start = time.time()
+    pt_start = tuple(int(coord) for coord in np.where(grid_np == "@"))
+    print("Calculating part 1 (takes anywhere between 1-2 min)...")
+    print_res(day, 1, shortest_path(pt_start, grid, ""))
+    print("Elapsed time: {:.2f}s".format(time.time() - time_start))
+
+    # part 2
+
+    grid[39][39:42] = ["@", "#", "@"]
+    grid[40][39:42] = ["#", "#", "#"]
+    grid[41][39:42] = ["@", "#", "@"]
+    print(grid_np[39:42, 39:42])
+    grid_np[39:42, 39:42] = [["@", "#", "@"],
+                             ["#", "#", "#"],
+                             ["@", "#", "@"]]
+    n_starts = [s for s in np.where(grid_np == "@")]
+    n_starts = [i for i in zip(n_starts[0], n_starts[1])]
+    print(n_starts)
 
 
 if __name__ == '__main__':
