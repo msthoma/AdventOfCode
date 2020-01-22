@@ -44,8 +44,8 @@ def shortest_path_p2(current_pts, grid, found_keys):
     else:
         poss_paths = []
         for key, (pt, dist, quadrant) in keys.items():
-            # n_current_pts =
-            poss_paths.append(dist + shortest_path(pt, grid, found_keys + key))
+            n_current_pts = tuple(pt if i == quadrant else p for i, p in enumerate(current_pts))
+            poss_paths.append(dist + shortest_path_p2(n_current_pts, grid, found_keys + key))
         path_len = min(poss_paths)
     pts_tested[current_pts, found_keys] = path_len
     return path_len
@@ -143,17 +143,19 @@ def main():
     print("Elapsed time: {:.2f}s".format(time.time() - time_start))
 
     # part 2
-
-    grid[39][39:42] = ["@", "#", "@"]
-    grid[40][39:42] = ["#", "#", "#"]
-    grid[41][39:42] = ["@", "#", "@"]
-    print(grid_np[39:42, 39:42])
+    # edit input as per part 2 instructions
     grid_np[39:42, 39:42] = [["@", "#", "@"],
                              ["#", "#", "#"],
                              ["@", "#", "@"]]
-    n_starts = [s for s in np.where(grid_np == "@")]
-    n_starts = [i for i in zip(n_starts[0], n_starts[1])]
-    print(n_starts)
+    # find starting positions
+    starts_p2 = [s for s in np.where(grid_np == "@")]
+    starts_p2 = tuple(i for i in zip(starts_p2[0], starts_p2[1]))
+
+    # calculate part 2
+    time_start = time.time()
+    print("Calculating part 2 (takes anywhere between 4-5 min)...")
+    print_res(day, 2, shortest_path_p2(starts_p2, grid_np.tolist(), ""))
+    print("Elapsed time: {:.2f}s".format(time.time() - time_start))
 
 
 if __name__ == '__main__':
