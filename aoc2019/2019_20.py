@@ -13,7 +13,7 @@ def get_neighbours(current_pt, grid, portals, recursive=False, depth=0):
         if recursive:  # multiple layers, for part 2
             pass
         else:  # only one layer, for part 1
-            neighbours.append(portals[current_pt])
+            neighbours.append([*portals[current_pt]][0])
 
     # possible movements (diagonally is impossible)
     dy, dx = [-1, 0, 1, 0], [0, 1, 0, -1]
@@ -74,7 +74,8 @@ def main():
     for k, v in portal_pairs.items():
         if len(v) == 2:
             p1, p2 = v.keys()
-            portals[p1], portals[p2] = p2, p1
+            dir1, dir2 = v.values()
+            portals[p1], portals[p2] = {p2: dir1}, {p1: dir2}
 
     # part 1
     start, end = [*portal_pairs["AA"]][0], [*portal_pairs["ZZ"]][0]
