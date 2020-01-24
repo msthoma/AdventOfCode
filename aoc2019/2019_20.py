@@ -7,7 +7,6 @@ def get_neighbours(point, grid, portals):
     """
     Determines reachable neighbours from given point
     """
-
     neighbours = []
     # add neighbours via portals
     if point in portals:
@@ -18,7 +17,7 @@ def get_neighbours(point, grid, portals):
 
     for i in range(4):
         y, x = point[0] + dy[i], point[1] + dx[i]
-        if grid[y][x] == ".":  # skip if wall
+        if grid[y][x] == ".":  # append only path tiles
             neighbours.append((y, x))
 
     return neighbours
@@ -54,8 +53,7 @@ def main():
     for k, v in portal_pairs.items():
         if len(v) == 2:
             p1, p2 = v
-            portals[p1] = p2
-            portals[p2] = p1
+            portals[p1], portals[p2] = p2, p1
 
     start, end = portal_pairs["AA"][0], portal_pairs["ZZ"][0]
     bfs = deque([start])
@@ -63,7 +61,6 @@ def main():
     answered = False
     while bfs:
         pt = bfs.popleft()
-
         neighbours = get_neighbours(pt, grid, portals)
         for neighbour in neighbours:
             if neighbour == end:
