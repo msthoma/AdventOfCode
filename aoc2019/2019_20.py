@@ -3,20 +3,23 @@ from collections import defaultdict, deque
 from utils.utils import day_name, input_fp, print_res
 
 
-def get_neighbours(point, grid, portals):
+def get_neighbours(current_pt, grid, portals, recursive=False, depth=0):
     """
     Determines reachable neighbours from given point
     """
     neighbours = []
     # add neighbours via portals
-    if point in portals:
-        neighbours.append(portals[point])
+    if current_pt in portals:
+        if recursive:  # multiple layers, for part 2
+            pass
+        else:  # only one layer, for part 1
+            neighbours.append(portals[current_pt])
 
     # possible movements (diagonally is impossible)
     dy, dx = [-1, 0, 1, 0], [0, 1, 0, -1]
 
     for i in range(4):
-        y, x = point[0] + dy[i], point[1] + dx[i]
+        y, x = current_pt[0] + dy[i], current_pt[1] + dx[i]
         if grid[y][x] == ".":  # append only path tiles
             neighbours.append((y, x))
 
@@ -30,7 +33,7 @@ def main():
         grid = [[c for c in line.strip("\n")] for line in f.readlines()]
 
     # identify portals from input
-    portal_pairs_dir = defaultdict(dict)  # portal_pairs in form {"key": {(external pt): "out", (internal pt): "in"}}
+    portal_pairs = defaultdict(dict)  # portal_pairs in form {"key": {(external pt): "out", (internal pt): "in"}}
     inner_key, outer_key = "in", "out"
     for i in range(len(grid)):
         for j in range(len(grid[0])):
@@ -39,42 +42,42 @@ def main():
                     if grid[i + 1][j].isalpha() and grid[i + 2][j] == ".":
                         key, pt = grid[i][j] + grid[i + 1][j], (i + 2, j)
                         if pt[0] == 2:  # outer top
-                            portal_pairs_dir[key][pt] = outer_key
+                            portal_pairs[key][pt] = outer_key
                         else:  # inner down
-                            portal_pairs_dir[key][pt] = inner_key
+                            portal_pairs[key][pt] = inner_key
 
                 if i - 2 >= 0:  # v up
                     if grid[i - 1][j].isalpha() and grid[i - 2][j] == ".":
                         key, pt = grid[i - 1][j] + grid[i][j], (i - 2, j)
                         if pt[0] == 28:  # inner top
-                            portal_pairs_dir[key][pt] = inner_key
+                            portal_pairs[key][pt] = inner_key
                         else:  # outer down
-                            portal_pairs_dir[key][pt] = outer_key
+                            portal_pairs[key][pt] = outer_key
 
                 if j + 2 < len(grid[0]):  # h right
                     if grid[i][j + 1].isalpha() and grid[i][j + 2] == ".":
                         key, pt = grid[i][j] + grid[i][j + 1], (i, j + 2)
                         if pt[1] == 2:  # outer left
-                            portal_pairs_dir[key][pt] = outer_key
+                            portal_pairs[key][pt] = outer_key
                         else:  # inner right
-                            portal_pairs_dir[key][pt] = inner_key
+                            portal_pairs[key][pt] = inner_key
 
                 if j - 2 >= 0:  # v left
                     if grid[i][j - 1].isalpha() and grid[i][j - 2] == ".":
                         key, pt = grid[i][j - 1] + grid[i][j], (i, j - 2)
                         if pt[1] == 28:  # inner left
-                            portal_pairs_dir[key][pt] = inner_key
+                            portal_pairs[key][pt] = inner_key
                         else:  # outer right
-                            portal_pairs_dir[key][pt] = outer_key
+                            portal_pairs[key][pt] = outer_key
 
     portals = {}
-    for k, v in portal_pairs_dir.items():
+    for k, v in portal_pairs.items():
         if len(v) == 2:
             p1, p2 = v.keys()
             portals[p1], portals[p2] = p2, p1
 
     # part 1
-    start, end = [*portal_pairs_dir["AA"]][0], [*portal_pairs_dir["ZZ"]][0]
+    start, end = [*portal_pairs["AA"]][0], [*portal_pairs["ZZ"]][0]
     bfs = deque([start])
     visited = {start: 0}
     answered = False
