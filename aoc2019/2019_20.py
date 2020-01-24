@@ -30,17 +30,14 @@ def main():
         grid = [[c for c in line.strip("\n")] for line in f.readlines()]
 
     # identify portals from input
-    portal_pairs = defaultdict(list)
-    portal_pairs_dir = defaultdict(dict)
-    inner_key = "in"
-    outer_key = "out"
+    portal_pairs_dir = defaultdict(dict)  # portal_pairs in form {"key": {(external pt): "out", (internal pt): "in"}}
+    inner_key, outer_key = "in", "out"
     for i in range(len(grid)):
         for j in range(len(grid[0])):
             if grid[i][j].isalpha():
                 if i + 2 < len(grid):  # v down
                     if grid[i + 1][j].isalpha() and grid[i + 2][j] == ".":
                         key, pt = grid[i][j] + grid[i + 1][j], (i + 2, j)
-                        portal_pairs[key].append(pt)
                         if pt[0] == 2:  # outer top
                             portal_pairs_dir[key][pt] = outer_key
                         else:  # inner down
@@ -49,7 +46,6 @@ def main():
                 if i - 2 >= 0:  # v up
                     if grid[i - 1][j].isalpha() and grid[i - 2][j] == ".":
                         key, pt = grid[i - 1][j] + grid[i][j], (i - 2, j)
-                        portal_pairs[key].append(pt)
                         if pt[0] == 28:  # inner top
                             portal_pairs_dir[key][pt] = inner_key
                         else:  # outer down
@@ -58,7 +54,6 @@ def main():
                 if j + 2 < len(grid[0]):  # h right
                     if grid[i][j + 1].isalpha() and grid[i][j + 2] == ".":
                         key, pt = grid[i][j] + grid[i][j + 1], (i, j + 2)
-                        portal_pairs[key].append(pt)
                         if pt[1] == 2:  # outer left
                             portal_pairs_dir[key][pt] = outer_key
                         else:  # inner right
@@ -67,25 +62,19 @@ def main():
                 if j - 2 >= 0:  # v left
                     if grid[i][j - 1].isalpha() and grid[i][j - 2] == ".":
                         key, pt = grid[i][j - 1] + grid[i][j], (i, j - 2)
-                        portal_pairs[key].append(pt)
                         if pt[1] == 28:  # inner left
                             portal_pairs_dir[key][pt] = inner_key
                         else:  # outer right
                             portal_pairs_dir[key][pt] = outer_key
 
-    # short portal_pairs into {"key": [(external),(internal)]
-
     portals = {}
-    ie = defaultdict(int)
-    for k, v in portal_pairs.items():
-        if len(v) == 2:
-            p1, p2 = v
-            portals[p1], portals[p2] = p2, p1
     for k, v in portal_pairs_dir.items():
-        print(k, v, len(v))
+        if len(v) == 2:
+            p1, p2 = v.keys()
+            portals[p1], portals[p2] = p2, p1
 
     # part 1
-    start, end = portal_pairs["AA"][0], portal_pairs["ZZ"][0]
+    start, end = [*portal_pairs_dir["AA"]][0], [*portal_pairs_dir["ZZ"]][0]
     bfs = deque([start])
     visited = {start: 0}
     answered = False
