@@ -4,38 +4,35 @@ from utils.utils import day_name, input_fp, print_res
 
 
 def find_min_path(start, end, grid, portals, recursive=False):
-    initial_depth = 0
-    start, end = (initial_depth, start), (initial_depth, end)
+    initial_layer = 0
+    start, end = (start, initial_layer), (end, initial_layer)
     bfs = deque([start])
     visited = {start: 0}
-    answered = False
     while bfs:
         pt = bfs.popleft()
         neighbours = get_neighbours(pt, grid, portals, recursive)
         for neighbour in neighbours:
             if neighbour == end:
-                print_res(day, 1, visited[pt] + 1)
-                answered = True
+                return visited[pt] + 1
             elif neighbour in visited:
                 continue
             else:
                 visited[neighbour] = visited[pt] + 1
                 bfs.append(neighbour)
-        if answered:
-            break
 
 
-def get_neighbours(current_pt, grid, portals, recursive=False):
+def get_neighbours(pt, grid, portals, recursive=False):
     """
     Determines reachable neighbours from given point
     """
+    current_pt, current_layer = pt
     neighbours = []
     # add neighbours via portals
     if current_pt in portals:
         if recursive:  # multiple layers, for part 2
             pass
         else:  # only one layer, for part 1
-            neighbours.append([*portals[current_pt]][0])
+            neighbours.append(([*portals[current_pt]][0], current_layer))
 
     # possible movements (diagonally is impossible)
     dy, dx = [-1, 0, 1, 0], [0, 1, 0, -1]
@@ -43,7 +40,7 @@ def get_neighbours(current_pt, grid, portals, recursive=False):
     for i in range(4):
         y, x = current_pt[0] + dy[i], current_pt[1] + dx[i]
         if grid[y][x] == ".":  # append only path tiles
-            neighbours.append((y, x))
+            neighbours.append(((y, x), current_layer))
 
     return neighbours
 
@@ -99,25 +96,10 @@ def main():
             dir1, dir2 = v.values()
             portals[p1], portals[p2] = {p2: dir1}, {p1: dir2}
 
-    # part 1
     start, end = [*portal_pairs["AA"]][0], [*portal_pairs["ZZ"]][0]
-    bfs = deque([start])
-    visited = {start: 0}
-    answered = False
-    while bfs:
-        pt = bfs.popleft()
-        neighbours = get_neighbours(pt, grid, portals)
-        for neighbour in neighbours:
-            if neighbour == end:
-                print_res(day, 1, visited[pt] + 1)
-                answered = True
-            elif neighbour in visited:
-                continue
-            else:
-                visited[neighbour] = visited[pt] + 1
-                bfs.append(neighbour)
-        if answered:
-            break
+
+    # part 1
+    print_res(day, 1, find_min_path(start, end, grid, portals))
 
     # part 2
 
