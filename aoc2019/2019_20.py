@@ -3,7 +3,29 @@ from collections import defaultdict, deque
 from utils.utils import day_name, input_fp, print_res
 
 
-def get_neighbours(current_pt, grid, portals, recursive=False, depth=0):
+def find_min_path(start, end, grid, portals, recursive=False):
+    initial_depth = 0
+    start, end = (initial_depth, start), (initial_depth, end)
+    bfs = deque([start])
+    visited = {start: 0}
+    answered = False
+    while bfs:
+        pt = bfs.popleft()
+        neighbours = get_neighbours(pt, grid, portals, recursive)
+        for neighbour in neighbours:
+            if neighbour == end:
+                print_res(day, 1, visited[pt] + 1)
+                answered = True
+            elif neighbour in visited:
+                continue
+            else:
+                visited[neighbour] = visited[pt] + 1
+                bfs.append(neighbour)
+        if answered:
+            break
+
+
+def get_neighbours(current_pt, grid, portals, recursive=False):
     """
     Determines reachable neighbours from given point
     """
