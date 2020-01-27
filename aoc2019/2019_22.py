@@ -24,9 +24,7 @@ def deal_increment(deck, increment):
 
 
 def cut_deck(deck, n):
-    n_deck = deck[n:].copy()
-    n_deck.extend(deck[:n])
-    return n_deck
+    return deck[n:] + deck[:n]
 
 
 def deal_new_stack(deck):
