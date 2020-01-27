@@ -4,10 +4,9 @@ from utils.utils import day_name, input_fp
 def biodiversity(grid):
     score = 0
     for i, row in enumerate(grid):
-        if i % 2:  # odd rows reversed
-            row = row[::-1]
         for j, tile in enumerate(row):
             if tile == "#":
+                print(2 ** (i * len(row) + j))
                 score += 2 ** (i * len(row) + j)
     return score
 
