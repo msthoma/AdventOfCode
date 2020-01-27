@@ -48,6 +48,7 @@ def main():
 
     # part 1
     grid_1 = grid.copy()
+    # loop until first repeating grid pattern occurs
     layouts = []
     while True:
         grid_1 = sim_turn(grid_1)
@@ -55,9 +56,16 @@ def main():
         if layout in layouts:
             break
         layouts.append(layout)
+    # calculate biodiversity
     print_res(day, 1, biodiversity(grid_1))
 
     # part 2
+    # create dictionary to hold recursive grids and populate it with empty grids, and the original grid at 0
+    empty_grid = ["".join(["."] * 5) for _ in range(5)]
+    recursive_grids = {i: empty_grid.copy() for i in range(-100, 101)}
+    recursive_grids[0] = grid.copy()
+
+    print(recursive_grids)
 
 
 if __name__ == '__main__':
