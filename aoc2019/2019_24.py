@@ -1,4 +1,4 @@
-from utils.utils import day_name, input_fp
+from utils.utils import day_name, input_fp, print_res
 
 
 def biodiversity(grid):
@@ -6,7 +6,6 @@ def biodiversity(grid):
     for i, row in enumerate(grid):
         for j, tile in enumerate(row):
             if tile == "#":
-                print(2 ** (i * len(row) + j))
                 score += 2 ** (i * len(row) + j)
     return score
 
@@ -48,8 +47,16 @@ def main():
         grid = [line.strip() for line in f.readlines()]
 
     # part 1
-    print(grid)
-    print(biodiversity(grid))
+    grid_1 = grid.copy()
+    layouts = []
+    while True:
+        grid_1 = sim_turn(grid_1)
+        layout = "".join(grid_1)
+        if layout in layouts:
+            break
+        layouts.append(layout)
+    print_res(day, 1, biodiversity(grid_1))
+
     # part 2
 
 
