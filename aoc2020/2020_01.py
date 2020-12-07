@@ -22,7 +22,7 @@ def sum3(data, goal_sum=2020):
 
 
 def main():
-    data = sorted(int(i) for i in utils.data(1, 2020).splitlines())
+    data = sorted(int(i) for i in utils.data(2020, 1).splitlines())
     data_desc = sorted(data, reverse=True)
 
     # part a

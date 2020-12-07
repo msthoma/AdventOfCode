@@ -7,7 +7,7 @@ import aocd
 
 
 def data(year: int, day: int):
-    return aocd.get_data(session_id(), year, day)
+    return aocd.get_data(session_id(), year=year, day=day)
 
 
 @functools.lru_cache(100)
