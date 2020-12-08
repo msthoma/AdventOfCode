@@ -1,10 +1,7 @@
 from utils import utils
 
 
-def main():
-    data = [line.split(" ") for line in utils.data(2020, 8).splitlines()]
-    data = [[i, int(j)] for i, j in data]
-
+def run_code(code: list):
     accumulator, current, executed = 0, 0, set()
 
     while True:
@@ -12,7 +9,7 @@ def main():
             break
 
         executed.add(current)
-        instr, val = data[current]
+        instr, val = code[current]
 
         if instr == "acc":
             accumulator += val
@@ -22,7 +19,14 @@ def main():
         elif instr == "nop":
             current += 1
 
-    print("Answer part a:", accumulator)
+    return accumulator
+
+
+def main():
+    data = [line.split(" ") for line in utils.data(2020, 8).splitlines()]
+    code = [[i, int(j)] for i, j in data]
+
+    print("Answer part a:", run_code(code))
     print("Answer part b:", 0)
 
 
