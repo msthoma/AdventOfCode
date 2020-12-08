@@ -6,7 +6,9 @@ from pathlib import Path
 import aocd
 
 
-def data(year: int, day: int):
+def data(year: int = None, day: int = None):
+    if year is None or day is None:
+        year, day = get_year_day()
     return aocd.get_data(session_id(), year=year, day=day)
 
 
@@ -17,6 +19,10 @@ def session_id():
     with open(s_id_file, "r") as f:
         s_id = f.read()
     return s_id
+
+
+def get_year_day():
+    return map(int, day_name().split("_"))
 
 
 def day_name():
