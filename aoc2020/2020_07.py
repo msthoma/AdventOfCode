@@ -1,6 +1,7 @@
 import re
 from collections import defaultdict
 
+import matplotlib.pyplot as plt
 import networkx as nx
 
 from utils import utils
@@ -38,9 +39,9 @@ def main():
         for child, n in children.items():
             g.add_edge(parent, child, n=n)
 
-    # fig = plt.figure(figsize=(20, 20))
-    # nx.draw(g, with_labels=True)
-    # plt.show()
+    plt.figure(figsize=(20, 20))
+    nx.draw(g, with_labels=True)
+    plt.show()
 
     print("Answer part a:", len(nx.ancestors(g, source="shiny gold")))
     print("Answer part b:", count_bags_in(bag="shiny gold", g=g))
