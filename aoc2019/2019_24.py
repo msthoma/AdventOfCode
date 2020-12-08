@@ -27,6 +27,23 @@ def sim_turn(grid):
     return next_grid
 
 
+def sim_turn_rec(grids, recursive=False):
+    next_grid = []
+    for i in range(len(grids)):
+        row = []
+        for j in range(len(grids[0])):
+            tile_type = grids[i][j]
+            count = count_adjacent(grids, (i, j))
+            if tile_type == "#" and count == 1:
+                row.append("#")
+            elif tile_type == "." and count in [1, 2]:
+                row.append("#")
+            else:
+                row.append(".")
+        next_grid.append("".join(row))
+    return next_grid
+
+
 def count_adjacent(grid, tile):
     count = 0
     for i, j in zip([-1, 0, 1, 0], [0, 1, 0, -1]):
@@ -37,6 +54,33 @@ def count_adjacent(grid, tile):
                     count += 1
             except IndexError:
                 pass
+    return count
+
+
+def count_adjacent_rec(grid, tile, recursive=False, level=0):
+    count = 0
+    for i, j in zip([-1, 0, 1, 0], [0, 1, 0, -1]):
+        i, j = i + tile[0], j + tile[1]
+        if i < 0 or i >= len(grid) or j < 0 or j >= len(grid):
+            # up or down, left or right, layer is one level up
+            level -= 1
+        if (i, j) == (2, 2):
+            # nested layer, one level down
+            level_down = level + 1
+            if tile == (1, 2):  # top
+                slice
+                pass
+            elif tile == (3, 2):  # bottom
+                pass
+            elif tile == (2, 1):  # left
+                pass
+            elif tile == (2, 3):  # right
+                pass
+        else:
+            # same level
+            if grid[i][j] == "#":
+                count += 1
+
     return count
 
 
