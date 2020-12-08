@@ -5,7 +5,7 @@ from collections import deque
 import matplotlib.pyplot as plt
 import numpy as np
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 pts_tested = {}  # saves already tested positions to avoid re-calculations
 
@@ -103,7 +103,7 @@ def get_neighbours(point, grid):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
 
     with open(input_fp(day), "r") as f:
         grid = [[c for c in line.strip()] for line in f.readlines()]
@@ -139,7 +139,7 @@ def main():
     time_start = time.time()
     pt_start = tuple(int(coord) for coord in np.where(grid_np == "@"))
     print("Calculating part 1 (takes anywhere between 1-2 min)...")
-    print_res(day, 1, shortest_path(pt_start, grid, ""))
+    res_print(day, 1, shortest_path(pt_start, grid, ""))
     print("Elapsed time: {:.2f}s".format(time.time() - time_start))
 
     # part 2
@@ -154,7 +154,7 @@ def main():
     # calculate part 2
     time_start = time.time()
     print("Calculating part 2 (takes anywhere between 4-5 min)...")
-    print_res(day, 2, shortest_path_p2(starts_p2, grid_np.tolist(), ""))
+    res_print(day, 2, shortest_path_p2(starts_p2, grid_np.tolist(), ""))
     print("Elapsed time: {:.2f}s".format(time.time() - time_start))
 
 

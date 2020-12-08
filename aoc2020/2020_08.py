@@ -26,7 +26,7 @@ def run_code(code: list, part: str = "a"):
 
 
 def main():
-    data = [line.split(" ") for line in utils.data(2020, 8).splitlines()]
+    data = [line.split(" ") for line in utils.get_data_for_day().splitlines()]
     code = [[i, int(j)] for i, j in data]
 
     # part a

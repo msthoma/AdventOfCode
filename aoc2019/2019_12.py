@@ -5,7 +5,7 @@ from itertools import combinations
 
 import numpy as np
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 dimensions = ["x", "y", "z"]
 moons = ["Io", "Europa", "Ganymede", "Callisto"]
@@ -24,7 +24,7 @@ def blender_simulation():
 
         positions = [[int(i) for i in line.strip("\n").split(",")] for line in path]
 
-        ob = bpy.data.objects[moon]
+        ob = bpy.get_data_for_day.objects[moon]
 
         frame_num = 0
 
@@ -49,7 +49,7 @@ def simulate(positions, velocities):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
 
     pattern = r"<x=(-?\d+).+y=(-?\d+).+z=(-?\d+)>"
 
@@ -84,7 +84,7 @@ def main():
             kinetic += abs(vel1[dim][moon])
         total += positional * kinetic
 
-    print_res(day, 1, total)
+    res_print(day, 1, total)
 
     # part 2
     # make copies to compare with original after each simulation
@@ -104,7 +104,7 @@ def main():
 
     # answer is the least common multiple of steps for each dimension
     lcm = np.lcm.reduce(steps_all)
-    print_res(day, 2, lcm)
+    res_print(day, 2, lcm)
 
     # save locations for animating with blender
     pos3 = deepcopy(positions)

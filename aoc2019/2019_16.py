@@ -1,6 +1,6 @@
 from tqdm import tqdm
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def get_pattern(i, leng):
@@ -28,13 +28,13 @@ def run_fft(signal, times):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
 
     with open(input_fp(day), "r") as f:
         data = [int(i) for i in f.read().strip()]
 
     # part 1
-    print_res(day, 1, "".join(str(i) for i in run_fft(data.copy(), 100)[:8]))
+    res_print(day, 1, "".join(str(i) for i in run_fft(data.copy(), 100)[:8]))
 
     # part 2
     offset = int("".join(str(i) for i in data[:7]))
@@ -55,7 +55,7 @@ def main():
         t.update()
     t.close()
 
-    print_res(day, 2, "".join(str(i) for i in data_2[:8]))
+    res_print(day, 2, "".join(str(i) for i in data_2[:8]))
 
 
 if __name__ == '__main__':

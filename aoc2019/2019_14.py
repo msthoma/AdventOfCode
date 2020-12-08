@@ -1,7 +1,7 @@
 import re
 from collections import defaultdict
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def get_reqs(reactions, fuel_amount=1, target="ORE"):
@@ -36,7 +36,7 @@ def get_reqs(reactions, fuel_amount=1, target="ORE"):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
 
     pattern = re.compile(r"(\d+) ([A-Z]+)")
 
@@ -52,7 +52,7 @@ def main():
         reactions[reaction[-1][1]] = {k: v for v, k in reaction[:-1]}
         reactions[reaction[-1][1]]["amount"] = reaction[-1][0]
 
-    print_res(day, 1, get_reqs(reactions, fuel_amount=1))
+    res_print(day, 1, get_reqs(reactions, fuel_amount=1))
 
     # part 2 - binary search to maximum FUEL with a trillion ORE
     goal = 1000000000000
@@ -67,7 +67,7 @@ def main():
         else:
             minimum = mid
 
-    print_res(day, 2, minimum)
+    res_print(day, 2, minimum)
 
 
 if __name__ == '__main__':

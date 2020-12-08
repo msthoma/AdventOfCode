@@ -21,8 +21,8 @@ def find_row_col(code: str, n_rows: int = 128, n_cols: int = 8):
 
 
 def main():
-    # import/process day data
-    data = utils.data(2020, 5).splitlines()
+    # import/process day get_data_for_day
+    data = utils.get_data_for_day(2020, 5).splitlines()
     assert all(len(s) == 10 for s in data)
 
     seat_ids = sorted(find_row_col(code)[-1] for code in data)

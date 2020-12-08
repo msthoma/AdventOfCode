@@ -4,8 +4,8 @@ from utils import utils
 
 
 def main():
-    # import/process day data
-    data = utils.data(2020, 4)
+    # import/process day get_data_for_day
+    data = utils.get_data_for_day(2020, 4)
 
     fields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"]
     req_fields = fields.copy()
@@ -25,7 +25,7 @@ def main():
                   "pid": lambda x: x.isdigit() and len(x) == 9,
                   "cid": lambda _: True}
 
-    # split data at empty lines
+    # split get_data_for_day at empty lines
     for entry in re.compile(r"^$", flags=re.MULTILINE).split(data):
         entry = [f.split(":") for f in
                  entry.strip().replace("\n", " ").split(" ")]

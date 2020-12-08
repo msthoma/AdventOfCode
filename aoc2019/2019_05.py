@@ -1,5 +1,5 @@
 from aoc2019 import intcode
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 # def computer(intcode, ip=0):
@@ -73,14 +73,14 @@ from utils.utils import day_name, input_fp, print_res
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         input_data = f.read().split(sep=",")
 
     input_data = [int(i) for i in input_data]
 
-    print_res(day, 1, intcode.computer(input_data.copy(), [1])["output"][-1])
-    print_res(day, 2, intcode.computer(input_data.copy(), [5])["output"][-1])
+    res_print(day, 1, intcode.computer(input_data.copy(), [1])["output"][-1])
+    res_print(day, 2, intcode.computer(input_data.copy(), [5])["output"][-1])
 
 
 if __name__ == '__main__':

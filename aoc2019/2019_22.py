@@ -1,4 +1,4 @@
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def shuffle(deck, instructions):
@@ -32,14 +32,14 @@ def deal_new_stack(deck):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
 
     with open(input_fp(day), "r") as f:
         instructions = (line.strip() for line in f.readlines())
 
     # part 1
     deck_1 = shuffle([i for i in range(10007)], instructions)
-    print_res(day, 1, deck_1.index(2019))
+    res_print(day, 1, deck_1.index(2019))
 
     # part 2
 

@@ -4,11 +4,11 @@ import numpy as np
 from matplotlib import animation
 from matplotlib import pyplot as plt
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         input_data = f.read().splitlines()
     asteroid_map = np.array([[1 if s == "#" else 0 for s in line.strip()] for line in input_data])
@@ -38,7 +38,7 @@ def main():
 
     station = max(los_asteroid_counts, key=los_asteroid_counts.get)
 
-    print_res(day, 1, los_asteroid_counts[station])
+    res_print(day, 1, los_asteroid_counts[station])
 
     # part 2
     los_angles = {math.atan2(y, x): (x, y) for x, y in los_asteroids_rel[station]}
@@ -53,7 +53,7 @@ def main():
     while [x, y] not in asteroid_coords:
         x, y = x + dx, y + dy
 
-    print_res(day, 2, y * 100 + x)
+    res_print(day, 2, y * 100 + x)
 
     # part 2 asteroid destruction animation
     n_frames = 200
@@ -65,8 +65,8 @@ def main():
     sct = ax.scatter([], [], s=15)
     title = ax.text(0.5, 0.02, "", transform=ax.transAxes, ha="center")
     annotation = ax.annotate("",
-                             xy=station, xycoords='data',
-                             xytext=station, textcoords='data',
+                             xy=station, xycoords='get_data_for_day',
+                             xytext=station, textcoords='get_data_for_day',
                              arrowprops=dict(arrowstyle="-",
                                              edgecolor="red",
                                              connectionstyle="arc3"),

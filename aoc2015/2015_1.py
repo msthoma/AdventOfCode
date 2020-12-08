@@ -1,11 +1,11 @@
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         input_data = f.read()
-    print_res(day, 1, input_data.count("(") - input_data.count(")"))
+    res_print(day, 1, input_data.count("(") - input_data.count(")"))
 
     pos = 0
     for i, instr in enumerate(input_data):
@@ -15,7 +15,7 @@ def main():
             pos -= 1
 
         if pos < 0:
-            print_res(day, 2, i + 1)
+            res_print(day, 2, i + 1)
             break
 
 

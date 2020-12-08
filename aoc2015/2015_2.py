@@ -1,11 +1,11 @@
 from functools import reduce
 from operator import mul
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         input_data = f.read()
 
@@ -22,8 +22,8 @@ def main():
     for dim in dims:
         ribbon_needed += 2 * (dim[0] + dim[1]) + reduce(mul, dim, 1)
 
-    print_res(day, 1, area_needed)
-    print_res(day, 1, ribbon_needed)
+    res_print(day, 1, area_needed)
+    res_print(day, 1, ribbon_needed)
 
 
 if __name__ == '__main__':

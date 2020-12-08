@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         img = np.array([int(i) for i in f.read().strip()])
 
@@ -18,7 +18,7 @@ def main():
     zero_counts = [np.count_nonzero(s == 0) for s in img_reshaped]
     min_zeros_layer = img_reshaped[zero_counts.index(min(zero_counts))]
 
-    print_res(day, 1, np.count_nonzero(min_zeros_layer == 1) * np.count_nonzero(min_zeros_layer == 2))
+    res_print(day, 1, np.count_nonzero(min_zeros_layer == 1) * np.count_nonzero(min_zeros_layer == 2))
 
     # numpy option to print arrays entirely
     np.set_printoptions(threshold=np.inf)
@@ -35,7 +35,7 @@ def main():
                     break
 
     res = np.reshape(res, (height, width))
-    print_res(day, 2, res)
+    res_print(day, 2, res)
 
     # plot image
     plt.figure(figsize=(4, 1.5))

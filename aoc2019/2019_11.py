@@ -1,5 +1,5 @@
 from aoc2019.intcode import computer
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 from collections import defaultdict
 
 d_list = list("LURD")
@@ -71,13 +71,13 @@ def run_robot(intcode, start_color=0):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         intcode = [int(i) for i in f.read().split(sep=",")]
 
     robot_path = run_robot(intcode.copy(), start_color=1)[1]
 
-    print_res(day, 1, len(set(robot_path)))
+    res_print(day, 1, len(set(robot_path)))
 
 
 if __name__ == '__main__':

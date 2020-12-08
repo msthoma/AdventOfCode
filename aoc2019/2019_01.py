@@ -1,4 +1,4 @@
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def recursive_fuel(mass):
@@ -10,12 +10,12 @@ def recursive_fuel(mass):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         input_data = f.read().splitlines()
 
-    print_res(day, 1, sum((int(i) // 3) - 2 for i in input_data))
-    print_res(day, 1, sum(recursive_fuel(int(i)) for i in input_data))
+    res_print(day, 1, sum((int(i) // 3) - 2 for i in input_data))
+    res_print(day, 1, sum(recursive_fuel(int(i)) for i in input_data))
 
 
 if __name__ == '__main__':

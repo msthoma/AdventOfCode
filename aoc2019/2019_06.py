@@ -1,9 +1,9 @@
 import networkx as nx
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         input_data = [line.strip().split(")") for line in f.read().splitlines()]
 
@@ -24,7 +24,7 @@ def main():
                 path_lengths[obj] = 0
         return path_lengths[obj]
 
-    print_res(day, 1, sum(get_path(obj) for obj in all_objects))
+    res_print(day, 1, sum(get_path(obj) for obj in all_objects))
 
     # path from SAN to COM
     san_to_com = ["SAN"]
@@ -42,14 +42,14 @@ def main():
             distance = me_to_com.index(obj) + san_to_com.index(obj)
             distance = distance - 2  # exclude YOU and SAN
             break
-    print_res(day, 2, distance)
+    res_print(day, 2, distance)
 
     # alternative solution with networkx
     g = nx.DiGraph()
     for pair in input_data:
         g.add_edge(*pair)
-    print_res(day, 1, nx.transitive_closure(g).size())
-    print_res(day, 2, nx.shortest_path_length(g.to_undirected(), "YOU", "SAN") - 2)
+    res_print(day, 1, nx.transitive_closure(g).size())
+    res_print(day, 2, nx.shortest_path_length(g.to_undirected(), "YOU", "SAN") - 2)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 
 def gen_point_path(directions):
@@ -25,7 +25,7 @@ def gen_point_path(directions):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
     with open(input_fp(day), "r") as f:
         input_data = f.read()
     first, second = input_data.splitlines()
@@ -45,12 +45,12 @@ def main():
     common = pd.merge(df_first, df_second, how="inner", left_on="x1y1", right_on="x2y2")
     common["manhattan"] = abs(common["x1"]) + abs(common["y1"])
 
-    print_res(day, 1, common.loc[1:, "manhattan"].min())
+    res_print(day, 1, common.loc[1:, "manhattan"].min())
 
     sums = [df_first[df_first["x1y1"] == inter].index.values.astype(int)[0] +
             df_second[df_second["x2y2"] == inter].index.values.astype(int)[0] for inter in common.loc[1:, "x1y1"]]
 
-    print_res(day, 2, min(sums))
+    res_print(day, 2, min(sums))
 
     # plot paths
     plt.figure(figsize=(8, 5))

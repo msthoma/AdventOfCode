@@ -1,6 +1,6 @@
 from collections import defaultdict, deque
 
-from utils.utils import day_name, input_fp, print_res
+from utils.utils import get_script_file_name, input_fp, res_print
 
 in_key, out_key = "in", "out"
 
@@ -58,7 +58,7 @@ def get_neighbours(pt, grid, portals, recursive=False):
 
 
 def main():
-    day = day_name()
+    day = get_script_file_name()
 
     with open(input_fp(day), "r") as f:
         grid = [[c for c in line.strip("\n")] for line in f.readlines()]
@@ -110,10 +110,10 @@ def main():
     start, end = [*portal_pairs["AA"]][0], [*portal_pairs["ZZ"]][0]
 
     # part 1
-    print_res(day, 1, find_min_path(start, end, grid, portals))
+    res_print(day, 1, find_min_path(start, end, grid, portals))
 
     # part 2
-    print_res(day, 2, find_min_path(start, end, grid, portals, recursive=True))
+    res_print(day, 2, find_min_path(start, end, grid, portals, recursive=True))
 
 
 if __name__ == '__main__':
