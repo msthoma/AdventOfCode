@@ -6,6 +6,14 @@ import networkx as nx
 from utils import utils
 
 
+def count_bags_in(bag: str, g: nx.DiGraph):
+    bag_count = 0
+    for bag, val in g[bag].items():
+        bag_count += val["n"]
+        bag_count += val["n"] * count_bags_in(bag, g)
+    return bag_count
+
+
 def main():
     data = utils.data(2020, 7).splitlines()
 
@@ -28,14 +36,14 @@ def main():
     g = nx.DiGraph()
     for parent, children in rules.items():
         for child, n in children.items():
-            g.add_edge(parent, child, count=n)
+            g.add_edge(parent, child, n=n)
 
     # fig = plt.figure(figsize=(20, 20))
     # nx.draw(g, with_labels=True)
     # plt.show()
 
     print("Answer part a:", len(nx.ancestors(g, source="shiny gold")))
-    print("Answer part b:", 0)
+    print("Answer part b:", count_bags_in(bag="shiny gold", g=g))
 
 
 if __name__ == '__main__':
