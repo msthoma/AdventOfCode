@@ -15,8 +15,8 @@ def count_trees(right, down, grid):
 
 
 def main():
-    # import/process day get_data_for_day
-    data = utils.get_data_for_day(2020, 3).splitlines()
+    # import/process day get_data
+    data = utils.get_data(2020, 3).splitlines()
 
     # part a
     answer_a = count_trees(3, 1, data)

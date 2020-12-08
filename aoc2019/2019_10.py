@@ -65,8 +65,8 @@ def main():
     sct = ax.scatter([], [], s=15)
     title = ax.text(0.5, 0.02, "", transform=ax.transAxes, ha="center")
     annotation = ax.annotate("",
-                             xy=station, xycoords='get_data_for_day',
-                             xytext=station, textcoords='get_data_for_day',
+                             xy=station, xycoords='data',
+                             xytext=station, textcoords='data',
                              arrowprops=dict(arrowstyle="-",
                                              edgecolor="red",
                                              connectionstyle="arc3"),

@@ -24,7 +24,7 @@ def blender_simulation():
 
         positions = [[int(i) for i in line.strip("\n").split(",")] for line in path]
 
-        ob = bpy.get_data_for_day.objects[moon]
+        ob = bpy.data.objects[moon]
 
         frame_num = 0
 

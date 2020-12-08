@@ -4,10 +4,10 @@ from utils import utils
 
 
 def main():
-    # import/process day get_data_for_day
-    data = utils.get_data_for_day(2020, 6)
+    # import/process day get_data
+    data = utils.get_data(2020, 6)
     answer_a, answer_b = 0, 0
-    # split get_data_for_day at empty lines
+    # split get_data at empty lines
     for entry in re.compile(r"^$", flags=re.MULTILINE).split(data):
         # part a
         answer_a += len(set(entry.replace("\n", "")))

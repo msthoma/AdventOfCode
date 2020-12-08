@@ -6,7 +6,7 @@ from pathlib import Path
 import aocd
 
 
-def get_data_for_day(year: int = None, day: int = None):
+def get_data(year: int = None, day: int = None):
     if year is None or day is None:
         year, day = get_year_day()
     return aocd.get_data(get_session_id(), year=year, day=day)
@@ -35,3 +35,7 @@ def input_fp(day):
 
 def res_print(day_name, part, res):
     print(f"{day_name}_{part} answer:", res)
+
+
+def res_print2(res, part):
+    print(f"{get_script_file_name()} part {part}: {res}")

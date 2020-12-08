@@ -16,7 +16,7 @@ def count_bags_in(bag: str, g: nx.DiGraph):
 
 
 def main():
-    data = utils.get_data_for_day(2020, 7).splitlines()
+    data = utils.get_data(2020, 7).splitlines()
 
     pattern = re.compile(r"(^|\d|no) ?(.+?) bag")
 
