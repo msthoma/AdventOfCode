@@ -12,7 +12,7 @@ def data(year: int, day: int):
 
 @functools.lru_cache(100)
 def session_id():
-    s_id_file = Path.cwd() / "session_id"
+    s_id_file = Path.cwd().parent / "session_id"
     assert s_id_file.is_file()
     with open(s_id_file, "r") as f:
         s_id = f.read()
