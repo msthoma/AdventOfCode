@@ -60,7 +60,6 @@ def next_round(layout: np.array, thresh: int, los: bool = False):
 def main():
     np.set_printoptions(threshold=sys.maxsize)
     data = np.array([list(l) for l in get_data().splitlines()])
-    # data_tuple = tuple(tuple(l) for l in get_data().splitlines())
 
     # part a
     layout1 = copy.deepcopy(data)
