@@ -38,4 +38,4 @@ def res_print(day_name, part, res):
 
 
 def res_print2(res, part):
-    print(f"{get_script_file_name()} part {part}: {res}")
+    print(f"{get_script_file_name()} part {part}: {res}", flush=True)
