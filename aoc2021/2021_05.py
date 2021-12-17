@@ -36,4 +36,3 @@ if __name__ == '__main__':
              np.arange(y_0, y_1) if not y_sort else np.flip(np.arange(y_0, y_1))] += 1
 
     res_print2(np.sum(grid >= 2), 2)
-
