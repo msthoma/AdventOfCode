@@ -9,7 +9,6 @@ if __name__ == '__main__':
     diag_only = list(filter(lambda l: l[0][0] != l[1][0] and l[0][1] != l[1][1], data))
 
     max_x, max_y = max([max([p[0] for p in line]) for line in data]), max([max([p[1] for p in line]) for line in data])
-    min_x, min_y = min([min([p[0] for p in line]) for line in data]), min([min([p[1] for p in line]) for line in data])
 
     grid = np.zeros((max_x + 10, max_y + 10), dtype=int)
 
