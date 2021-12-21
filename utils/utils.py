@@ -1,6 +1,7 @@
 import functools
 import os
 import sys
+import time
 from pathlib import Path
 
 import aocd
@@ -37,5 +38,6 @@ def res_print(day_name, part, res):
     print(f"{day_name}_{part} answer:", res)
 
 
-def res_print2(res, part):
-    print(f"{get_script_file_name()} part {part} answer: {res}", flush=True)
+def res_print2(res, part: int, start_time: float = None):
+    total_time = f" (total time: {round(time.time() - start_time, 4)}s)" if start_time is not None else ""
+    print(f"{get_script_file_name()} part {part} answer: {res}{total_time}", flush=True)
