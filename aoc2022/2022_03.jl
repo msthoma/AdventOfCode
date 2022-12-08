@@ -2,7 +2,7 @@ import IterTools
 
 priorities = Dict(j => i for (i, j) in enumerate("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"))
 
-open("day03_input.txt", "r") do f
+open("data/day_03.txt", "r") do f
     lines = readlines(f)
 
     priorities_part_1 = Int[]

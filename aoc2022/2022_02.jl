@@ -12,7 +12,7 @@ shape_scores = Dict{String,Int}("X" => 1, "Y" => 2, "Z" => 3)
 # part 2
 # X means you need to lose, Y means you need to draw, Z means you need to win
 
-open("day02_input.txt", "r") do f
+open("data/day_02.txt", "r") do f
     data = [split(line, " ") for line in readlines(f)]
 
     total_score = 0

@@ -1,4 +1,4 @@
-open("day04_input.txt", "r") do f
+open("data/day_04.txt", "r") do f
     lines = readlines(f)
 
     fully_contained = 0
