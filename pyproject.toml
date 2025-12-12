@@ -1,17 +1,22 @@
-[tool.poetry]
+[project]
 name = "adventofcode"
 version = "0.1.0"
 description = ""
-authors = ["marios <msthoma@yahoo.com>"]
-
-[tool.poetry.dependencies]
-python = ">=3.9,<=3.12"
-advent-of-code-data = "^2.0.1"
-numpy = "^1.26.0"
-more-itertools = "^10.1.0"
-
-[tool.poetry.dev-dependencies]
+authors = [
+    {name = "marios", email = "msthoma@yahoo.com"}
+]
+requires-python = ">=3.11,<=3.12"
+dependencies = [
+    "numpy>=2.3.5",
+    "more-itertools>=10.8.0",
+    "tqdm>=4.67.1",
+    "advent-of-code-data>=2.1.0",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aoc*", "utils"]
